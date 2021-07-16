@@ -1,0 +1,24 @@
+.menuOption{
+    height: 50px;
+    padding: 5px 5px 5px 0px;
+    margin: 0px;
+}
+
+.menuOption a{
+    /* color: #2CA8FF; */
+    color: rgb(58, 57, 57);
+}
+
+.menuOption:hover{
+    background-color: rgba(201, 202, 206, 0.637);
+    
+}
+
+.menuOption:active{
+    background-color: rgb(201, 202, 206);
+    color: rgb(255, 255, 255);
+}
+
+.espace{
+    height: 50px;
+}

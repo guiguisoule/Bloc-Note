@@ -1,0 +1,56 @@
+
+<body class="imgs">
+
+    <div class="boxmarge">
+
+        <div class="container" id="container">
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h4> Toujous faire Attention sur le net! </h4>
+                    <p> Cookie : Anciennement petit gâteau sucré, qu'on acceptait avec plaisir. Aujourd'hui : petit fichier informatique drôlement salé, qu'il faut refuser avec véhémence.</p>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    Le succès est un chemin que la patience et le travail rendent accessible
+                </form>
+            </div>
+            <div class="form-container sign-in-container">
+                <div class="alert alert-danger" *ngIf="erreur==1"> <strong>login ou mot de passe erronés..</strong> </div>
+
+                <form action="#">
+                    <h1>S'identifier</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <span>or use your account</span>
+                    <input type="email" placeholder="Email" [(ngModel)]="operateur.meloper" name="meloper"/>
+                    <input type="password" placeholder="Password" [(ngModel)]="operateur.password" name="password"/>
+                    <a href="#">Forgot your password?</a>
+                    <button type="button" (click)="onLoggedin()" class="btn btn-success">Connexion</button>
+
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Securite</h1>
+                        <p>Pour rester connecté avec nous, veuillez vous connecter avec vos informations personnelles</p>
+                        <button class="ghost" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h2> Bienvenues </h2>
+                        <h1>SIM2G</h1>
+                        <p>Entrez vos informations personnelles et commencez votre voyage avec nous</p>
+                        <button class="ghost" id="signUp">I'liked</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+        
+</body>
