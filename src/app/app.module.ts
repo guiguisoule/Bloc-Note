@@ -27,6 +27,12 @@ import { EtatOperationComponent } from './modals/etat-operation/etat-operation.c
 import { DetailDonnesComponent } from './modals/detail-donnes/detail-donnes.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { NotificationsService } from './services/notifications.service';
+import { PaysService } from './pages/parametreGlobeau/pays/model-service/pays.service';
+import { AnimalTypeService } from './pages/parametres/animal/animal-type/model-service/animal-type.service';
+import { AnimalService } from './pages/parametres/animal/animals/model-service/animal.service';
+import { DeviseService } from './pages/parametreGlobeau/devises/model-service/devise.service';
+import { LangueService } from './pages/parametreGlobeau/langue/model-service/langue.service';
+import { SimService } from './pages/parametreGlobeau/gestion-sim/model-service/sim.service';
 
 
 @NgModule({
@@ -51,7 +57,13 @@ import { NotificationsService } from './services/notifications.service';
     LoginPageComponent,
   ],
   providers: [
-    NotificationsService
+    NotificationsService,
+    PaysService,
+    AnimalTypeService,
+    AnimalService,
+    DeviseService,
+    LangueService,
+    SimService
   ],
   bootstrap: [AppComponent]
 })

@@ -23,8 +23,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatMenuModule} from '@angular/material/menu';
 
 
 //importaion des pages et composant
@@ -106,7 +106,8 @@ import { VocationMarchesComponent } from 'app/pages/parametres/vocation-marches/
     MatSortModule,
     MatTableModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule
   ],
   declarations: [
     DashboardComponent,

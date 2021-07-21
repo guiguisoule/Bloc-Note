@@ -55,7 +55,7 @@ export class DecoupageAdminComponent implements AfterViewInit {
   }
 
   savePrixBetail(){
-    this.notificationService.showNotification('danger');
+    //traitement
   }
 
 }

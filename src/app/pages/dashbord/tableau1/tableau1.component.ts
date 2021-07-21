@@ -55,7 +55,7 @@ export class Tableau1Component implements AfterViewInit {
   }
 
   savePrixBetail(){
-    this.notificationService.showNotification('danger');
+    //traitement
   }
 
 }

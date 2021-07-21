@@ -55,7 +55,7 @@ export class LaitComponent implements AfterViewInit {
   }
 
   savePrixBetail(){
-    this.notificationService.showNotification('danger');
+    //traitement
   }
 
 }

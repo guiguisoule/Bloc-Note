@@ -55,7 +55,7 @@ export class SecteurActiviteComponent implements AfterViewInit {
   }
 
   savePrixBetail(){
-    this.notificationService.showNotification('danger');
+    //traitement
   }
 
 }

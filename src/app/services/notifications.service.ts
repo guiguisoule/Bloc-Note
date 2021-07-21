@@ -9,12 +9,9 @@ export class NotificationsService {
 
   constructor() { }
 
-  showNotification(typ: string){
+  showNotification(typ: string, mss: string){
     const type = typ;
-    let ms = "Echec de l'enregistrement";
-    if(type == 'success'){
-      ms = "Enregistrement effectue avec success !";
-    }
+    const ms = mss
     $.notify({
         icon: "notifications",
         message: ms

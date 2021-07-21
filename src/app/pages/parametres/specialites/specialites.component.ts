@@ -55,7 +55,7 @@ export class SpecialitesComponent implements AfterViewInit {
   }
 
   savePrixBetail(){
-    this.notificationService.showNotification('danger');
+    //traitement
   }
 
 }

@@ -3,13 +3,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { PaysData } from './model-service/pays.model';
+import { PaysService } from './model-service/pays.service';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +22,143 @@ const NAMES: string[] = [
   styleUrls: ['./pays.component.css']
 })
 export class PaysComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id', 'nom_pays', 'capitale', 'superficie','population', 'indicatif', 'codedev', 'codelang', 'star'];
+  dataSource: MatTableDataSource<PaysData>;
+
+  //creation d'un instance de pays connecte au formulaire d'ajout 
+  pays: PaysData = new PaysData();
+
+  //creation d'un instance de pays connecte au formulaire d'ajout 
+  paysEdite: PaysData = new PaysData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private paysService: PaysService,
+    private notificationService: NotificationsService) {
+    // Create 100 pays
+    // const paysData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des pays
+    // this.chargerListPays();
+
+    this.paysService.getPaysList().subscribe(
+      responce => {
+        const paysData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(paysData);
+      },
+      error => {
+        console.log(error);
+        const paysData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(paysData);
+      });
+
+  }
+
+  chargerListPays(){
+    this.paysService.getPaysList().subscribe(
+      responce => {
+        console.log(responce)
+        const paysData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(paysData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const paysData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(paysData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.paysService.getPays(this.pays.id).subscribe(
+      responce => {
+        //Operation si le pays existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce pays exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau pays
+        //initialisation de dans_ci par defaut
+        this.pays.dans_ci = 1;
+
+        this.paysService.createPays(this.pays).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListPays();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+     //initialisation de dans_ci par defaut
+     this.pays.dans_ci = 1;
+
+     this.paysService.createPays(this.paysEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListPays();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idPays : string){
+    this.paysService.getPays(idPays).subscribe(
+      responce => {
+        this.paysEdite.id = responce['id'];
+        this.paysEdite.nom_pays = responce['nom_pays'];
+        this.paysEdite.population = responce['population'];
+        this.paysEdite.superficie = responce['superficie'];
+        this.paysEdite.indicatif = responce['indicatif'];
+        this.paysEdite.dans_ci = responce['dans_ci'];
+        this.paysEdite.codelang = responce['codelang'];
+        this.paysEdite.codedev = responce['codedev'];
+        this.paysEdite.capitale = responce['capitale'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeletePays(id : string){
+    this.paysService.deletePays(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListPays();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListPays();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +170,4 @@ export class PaysComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    this.notificationService.showNotification('danger');
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

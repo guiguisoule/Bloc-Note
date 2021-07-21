@@ -3,13 +3,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
+import { LangueService } from '../langue/model-service/langue.service';
+import { LangueData } from './model-service/langue.model';
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +21,132 @@ const NAMES: string[] = [
   styleUrls: ['./langue.component.css']
 })
 export class LangueComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['codelang', 'libellelang', 'star'];
+  dataSource: MatTableDataSource<LangueData>;
+
+  //creation d'un instance de langue connecte au formulaire d'ajout 
+  langue: LangueData = new LangueData();
+
+  //creation d'un instance de langue connecte au formulaire d'ajout 
+  langueEdite: LangueData = new LangueData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private langueService: LangueService,
+    private notificationService: NotificationsService) {
+    // Create 100 langue
+    // const langueData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des langue
+    // this.chargerListLangue();
+
+    this.langueService.getLangueList().subscribe(
+      responce => {
+        const langueData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(langueData);
+      },
+      error => {
+        console.log(error);
+        const langueData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(langueData);
+      });
+
+  }
+
+  chargerListLangue(){
+    this.langueService.getLangueList().subscribe(
+      responce => {
+        console.log(responce)
+        const langueData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(langueData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const langueData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(langueData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.langueService.getLangue(this.langue.codelang).subscribe(
+      responce => {
+        //Operation si le langue existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce langue exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau langue
+
+        this.langueService.createLangue(this.langue).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListLangue();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+
+     this.langueService.createLangue(this.langueEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListLangue();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idLangue : string){
+    this.langueService.getLangue(idLangue).subscribe(
+      responce => {
+        this.langueEdite.codelang = responce['codelang'];
+        this.langueEdite.libellelang = responce['libellelang'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteLangue(id : string){
+    this.langueService.deleteLangue(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListLangue();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListLangue();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +158,4 @@ export class LangueComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    this.notificationService.showNotification('danger');
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 
