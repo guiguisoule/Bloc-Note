@@ -3,13 +3,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
+import { Niveau2Data } from '../niveau2/model-service/admin_niv2.model';
+import { Niveau2Service } from '../niveau2/model-service/niveau2.service';
+import { Niveau3Data } from './model-service/niveau3.model';
+import { Niveau3Service } from './model-service/niveau3.service';
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +23,157 @@ const NAMES: string[] = [
   styleUrls: ['./niveau3.component.css']
 })
 export class Niveau3Component implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id_al3', 'libelle_al3' , 'id_al2', 'star'];
+  dataSource: MatTableDataSource<Niveau3Data>;
+
+  //creation d'un instance de niveau2 connecte au formulaire d'ajout 
+  niveau3: Niveau3Data = new Niveau3Data();
+
+  //creation d'un instance de niveau2 connecte au formulaire d'ajout 
+  niveau3Edite: Niveau3Data = new Niveau3Data();
+
+  niveau2List: Niveau2Data[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private niveau3Service: Niveau3Service,
+    private niveau2Service: Niveau2Service,
+    private notificationService: NotificationsService) {
+    // Create 200 niveau2
+    // const niveau2Data = Array.from({length: 200}, (_, k) => createNewUser(k + 2));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des niveau2
+    // this.chargerListNiveau3();
+
+    this.niveau3Service.getNiveau3List().subscribe(
+      responce => {
+        const niveau2Data = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(niveau2Data);
+      },
+      error => {
+        console.log(error);
+        const niveau2Data = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(niveau2Data);
+      });
+
+  }
+
+  chargerListNiveau3(){
+    this.niveau3Service.getNiveau3List().subscribe(
+      responce => {
+        // console.log(responce)
+        const niveau2Data = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(niveau2Data);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      },
+      error => {
+        console.log(error);
+        const niveau2Data = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(niveau2Data);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  chargerListeNiveau2(){
+    this.niveau2Service.getNiveau2List().subscribe(
+     responce => {
+      //  console.log(responce)
+       this.niveau2List = responce;
+     },
+     error => {
+       console.log(error);
+     });
+    
+   }
+
+  onSave(){
+
+    this.niveau3Service.getNiveau3(this.niveau3.id_al3).subscribe(
+      responce => {
+        //Operation si le niveau2 existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce niveau2 exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau niveau2
+
+        this.niveau3Service.createNiveau3(this.niveau3).subscribe(
+          responce => {
+            // console.log(responce)
+            this.chargerListeNiveau2();
+            this.chargerListNiveau3();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+
+     this.niveau3Service.createNiveau3(this.niveau3Edite).subscribe(
+       responce => {
+        //  console.log(responce)
+         this.chargerListeNiveau2();
+         this.chargerListNiveau3();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idNiveau3 : string){
+    this.niveau3Service.getNiveau3(idNiveau3).subscribe(
+      responce => {
+
+        this.chargerListeNiveau2();
+
+        this.niveau3Edite.id_al3 = responce['id_al3'];
+        this.niveau3Edite.id_al2 = responce['id_al2'];
+        this.niveau3Edite.libelle_al3 = responce['libelle_al3'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteNiveau3(id : string){
+    this.niveau3Service.deleteNiveau3(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListNiveau3();
+      this.chargerListeNiveau2();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    this.chargerListNiveau3();  
+    this.chargerListeNiveau2();  
   }
 
   applyFilter(event: Event) {
@@ -54,22 +185,4 @@ export class Niveau3Component implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

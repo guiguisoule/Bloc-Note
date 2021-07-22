@@ -5,6 +5,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { PaysData } from 'app/pages/parametreGlobeau/pays/model-service/pays.model';
 import { PaysService } from 'app/pages/parametreGlobeau/pays/model-service/pays.service';
 import { NotificationsService } from 'app/services/notifications.service';
+import { AnimalTypeData } from './model-service/animal-type.model';
+import { AnimalTypeService } from './model-service/animal-type.service';
 
 export interface UserData {
   id: string;
@@ -28,58 +30,58 @@ const NAMES: string[] = [
   styleUrls: ['./animal-type.component.css']
 })
 export class AnimalTypeComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'nom_pays', 'capitale', 'superficie','population', 'indicatif', 'codedev', 'codelang', 'star'];
-  dataSource: MatTableDataSource<PaysData>;
+  displayedColumns: string[] = ['animaltypeid', 'name_FR', 'name_EN', 'name_PT','active', 'star'];
+  dataSource: MatTableDataSource<AnimalTypeData>;
 
-  //creation d'un instance de pays connecte au formulaire d'ajout 
-  pays: PaysData = new PaysData();
+  //creation d'un instance de animalType connecte au formulaire d'ajout 
+  animalType: AnimalTypeData = new AnimalTypeData();
 
-  //creation d'un instance de pays connecte au formulaire d'ajout 
-  paysEdite: PaysData = new PaysData();
+  //creation d'un instance de animalType connecte au formulaire d'ajout 
+  animalTypeEdite: AnimalTypeData = new AnimalTypeData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private paysService: PaysService,
+    private animalTypeService: AnimalTypeService,
     private notificationService: NotificationsService) {
-    // Create 100 pays
-    // const paysData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+    // Create 100 animalType
+    // const animalTypeData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    //chargement de la liste des pays
-    // this.chargerListPays();
+    //chargement de la liste des animalType
+    // this.chargerListAnimalType();
 
-    this.paysService.getPaysList().subscribe(
+    this.animalTypeService.getAnimalTypeList().subscribe(
       responce => {
-        const paysData = responce;
+        const animalTypeData = responce;
         // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(paysData);
+        this.dataSource = new MatTableDataSource(animalTypeData);
       },
       error => {
         console.log(error);
-        const paysData = [];
+        const animalTypeData = [];
         // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(paysData);
+        this.dataSource = new MatTableDataSource(animalTypeData);
       });
 
   }
 
-  chargerListPays(){
-    this.paysService.getPaysList().subscribe(
+  chargerListAnimalType(){
+    this.animalTypeService.getAnimalTypeList().subscribe(
       responce => {
         console.log(responce)
-        const paysData = responce;
+        const animalTypeData = responce;
         // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(paysData);
+        this.dataSource = new MatTableDataSource(animalTypeData);
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
       error => {
         console.log(error);
-        const paysData = [];
+        const animalTypeData = [];
         // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(paysData);
+        this.dataSource = new MatTableDataSource(animalTypeData);
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -88,20 +90,18 @@ export class AnimalTypeComponent implements AfterViewInit {
 
   onSave(){
 
-    this.paysService.getPays(this.pays.id).subscribe(
+    this.animalTypeService.getAnimalType(this.animalType.animaltypeid).subscribe(
       responce => {
-        //Operation si le pays existe deja
-        this.notificationService.showNotification('danger', 'Echec : Ce pays exist deja !<br>Merci de changer les identifients');
+        //Operation si le animalType existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce animalType exist deja !<br>Merci de changer les identifients');
       },
       error => {
-        //Enregistrement du nouveau pays
-        //initialisation de dans_ci par defaut
-        this.pays.dans_ci = 1;
+        //Enregistrement du nouveau animalType
 
-        this.paysService.createPays(this.pays).subscribe(
+        this.animalTypeService.createAnimalType(this.animalType).subscribe(
           responce => {
             console.log(responce)
-            this.chargerListPays();
+            this.chargerListAnimalType();
             this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
           },
           error => {
@@ -117,12 +117,11 @@ export class AnimalTypeComponent implements AfterViewInit {
 
   onSaveEdite(){
      //initialisation de dans_ci par defaut
-     this.pays.dans_ci = 1;
-
-     this.paysService.createPays(this.paysEdite).subscribe(
+     
+     this.animalTypeService.createAnimalType(this.animalTypeEdite).subscribe(
        responce => {
          console.log(responce)
-         this.chargerListPays();
+         this.chargerListAnimalType();
          this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
        },
        error => {
@@ -132,18 +131,14 @@ export class AnimalTypeComponent implements AfterViewInit {
        
   }
 
-  onEdite(idPays : string){
-    this.paysService.getPays(idPays).subscribe(
+  onEdite(idAnimalType : string){
+    this.animalTypeService.getAnimalType(idAnimalType).subscribe(
       responce => {
-        this.paysEdite.id = responce['id'];
-        this.paysEdite.nom_pays = responce['nom_pays'];
-        this.paysEdite.population = responce['population'];
-        this.paysEdite.superficie = responce['superficie'];
-        this.paysEdite.indicatif = responce['indicatif'];
-        this.paysEdite.dans_ci = responce['dans_ci'];
-        this.paysEdite.codelang = responce['codelang'];
-        this.paysEdite.codedev = responce['codedev'];
-        this.paysEdite.capitale = responce['capitale'];
+        this.animalTypeEdite.animaltypeid = responce['animaltypeid'];
+        this.animalTypeEdite.name_EN = responce['name_EN'];
+        this.animalTypeEdite.name_FR = responce['name_FR'];
+        this.animalTypeEdite.name_PT = responce['name_PT'];
+        this.animalTypeEdite.active = responce['active'];
         console.log(responce)
       },
       error => {
@@ -152,19 +147,19 @@ export class AnimalTypeComponent implements AfterViewInit {
       });
   }
 
-  onDeletePays(id : string){
-    this.paysService.deletePays(id).subscribe(
+  onDeleteAnimalType(id : string){
+    this.animalTypeService.deleteAnimalType(id).subscribe(
       responce => {
         console.log(responce)
       },
       error => {
         console.log(error);
       });
-      this.chargerListPays();
+      this.chargerListAnimalType();
   }
 
   ngAfterViewInit() {
-    this.chargerListPays();    
+    this.chargerListAnimalType();    
   }
 
   applyFilter(event: Event) {

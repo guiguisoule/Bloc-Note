@@ -3,13 +3,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { PeriodiciteEnquetteService } from './model-service/periodicite-enquette.service';
+import { PeriodiciteEnquetteData } from './model-service/periodiciteEnquetteur.model';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +22,136 @@ const NAMES: string[] = [
   styleUrls: ['./periodicite-enquettes.component.css']
 })
 export class PeriodiciteEnquettesComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['periodicityofsurveyId', 'Freguency', 'Name_FR', 'Name_EN', 'Name_PT', 'star'];
+  dataSource: MatTableDataSource<PeriodiciteEnquetteData>;
+
+  //creation d'un instance de periodiciteEnquette connecte au formulaire d'ajout 
+  periodiciteEnquette: PeriodiciteEnquetteData = new PeriodiciteEnquetteData();
+
+  //creation d'un instance de periodiciteEnquette connecte au formulaire d'ajout 
+  periodiciteEnquetteEdite: PeriodiciteEnquetteData = new PeriodiciteEnquetteData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private periodiciteEnquetteService: PeriodiciteEnquetteService,
+    private notificationService: NotificationsService) {
+    // Create 100 periodiciteEnquette
+    // const periodiciteEnquetteData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des periodiciteEnquette
+    // this.chargerListPeriodiciteEnquette();
+
+    this.periodiciteEnquetteService.getPeriodiciteEnquetteList().subscribe(
+      responce => {
+        const periodiciteEnquetteData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(periodiciteEnquetteData);
+      },
+      error => {
+        console.log(error);
+        const periodiciteEnquetteData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(periodiciteEnquetteData);
+      });
+
+  }
+
+  chargerListPeriodiciteEnquette(){
+    this.periodiciteEnquetteService.getPeriodiciteEnquetteList().subscribe(
+      responce => {
+        console.log(responce)
+        const periodiciteEnquetteData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(periodiciteEnquetteData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const periodiciteEnquetteData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(periodiciteEnquetteData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.periodiciteEnquetteService.getPeriodiciteEnquette(this.periodiciteEnquette.periodicityofsurveyId).subscribe(
+      responce => {
+        //Operation si le periodiciteEnquette existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce periodiciteEnquette exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau periodiciteEnquette
+
+        this.periodiciteEnquetteService.createPeriodiciteEnquette(this.periodiciteEnquette).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListPeriodiciteEnquette();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+     //initialisation de dans_ci par defaut
+     
+     this.periodiciteEnquetteService.createPeriodiciteEnquette(this.periodiciteEnquetteEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListPeriodiciteEnquette();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idPeriodiciteEnquette : string){
+    this.periodiciteEnquetteService.getPeriodiciteEnquette(idPeriodiciteEnquette).subscribe(
+      responce => {
+        this.periodiciteEnquetteEdite.periodicityofsurveyId = responce['periodicityofsurveyId'];
+        this.periodiciteEnquetteEdite.Name_EN = responce['Name_EN'];
+        this.periodiciteEnquetteEdite.Name_FR = responce['Name_FR'];
+        this.periodiciteEnquetteEdite.Name_PT = responce['Name_PT'];
+        this.periodiciteEnquetteEdite.Freguency = responce['Freguency'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeletePeriodiciteEnquette(id : string){
+    this.periodiciteEnquetteService.deletePeriodiciteEnquette(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListPeriodiciteEnquette();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListPeriodiciteEnquette();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +163,4 @@ export class PeriodiciteEnquettesComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

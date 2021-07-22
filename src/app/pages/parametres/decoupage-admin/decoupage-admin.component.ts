@@ -2,14 +2,11 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { PaysData } from 'app/pages/parametreGlobeau/pays/model-service/pays.model';
+import { PaysService } from 'app/pages/parametreGlobeau/pays/model-service/pays.service';
 import { NotificationsService } from 'app/services/notifications.service';
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
+import { DecoupageAdminService } from './model-service/decoupage-admin.service';
+import { DecoupageData } from './model-service/pays-niveau.model';
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +23,157 @@ const NAMES: string[] = [
   styleUrls: ['./decoupage-admin.component.css']
 })
 export class DecoupageAdminComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id', 'level' , 'libellenivpays', 'star'];
+  dataSource: MatTableDataSource<DecoupageData>;
+
+  //creation d'un instance de decoupage connecte au formulaire d'ajout 
+  decoupage: DecoupageData = new DecoupageData();
+
+  //creation d'un instance de decoupage connecte au formulaire d'ajout 
+  decoupageEdite: DecoupageData = new DecoupageData();
+
+  paysList: PaysData[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private decoupageService: DecoupageAdminService,
+    private paysService: PaysService,
+    private notificationService: NotificationsService) {
+    // Create 100 decoupage
+    // const decoupageData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des decoupage
+    // this.chargerListDecoupage();
+
+    this.decoupageService.getDecoupageList().subscribe(
+      responce => {
+        const decoupageData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(decoupageData);
+      },
+      error => {
+        console.log(error);
+        const decoupageData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(decoupageData);
+      });
+
+  }
+
+  chargerListDecoupage(){
+    this.decoupageService.getDecoupageList().subscribe(
+      responce => {
+        // console.log(responce)
+        const decoupageData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(decoupageData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      },
+      error => {
+        console.log(error);
+        const decoupageData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(decoupageData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  chargerListePays(){
+    this.paysService.getPaysList().subscribe(
+     responce => {
+      //  console.log(responce)
+       this.paysList = responce;
+     },
+     error => {
+       console.log(error);
+     });
+    
+   }
+
+  onSave(){
+
+    this.decoupageService.getDecoupage(this.decoupage.id).subscribe(
+      responce => {
+        //Operation si le decoupage existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce decoupage exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau decoupage
+
+        this.decoupageService.createDecoupage(this.decoupage).subscribe(
+          responce => {
+            // console.log(responce)
+            this.chargerListePays();
+            this.chargerListDecoupage();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+
+     this.decoupageService.createDecoupage(this.decoupageEdite).subscribe(
+       responce => {
+        //  console.log(responce)
+         this.chargerListePays();
+         this.chargerListDecoupage();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idDecoupage : string){
+    this.decoupageService.getDecoupage(idDecoupage).subscribe(
+      responce => {
+
+        this.chargerListePays();
+
+        this.decoupageEdite.id = responce['id'];
+        this.decoupageEdite.level = responce['level'];
+        this.decoupageEdite.libellenivpays = responce['libellenivpays'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteDecoupage(id : string){
+    this.decoupageService.deleteDecoupage(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListDecoupage();
+      this.chargerListePays();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    this.chargerListDecoupage();  
+    this.chargerListePays();  
   }
 
   applyFilter(event: Event) {
@@ -54,22 +185,4 @@ export class DecoupageAdminComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

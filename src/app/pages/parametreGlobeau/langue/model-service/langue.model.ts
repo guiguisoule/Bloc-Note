@@ -1,5 +1,5 @@
 export class LangueData {
-  codelang:	string;
-  libellelang:	string;
+  codelangue:	string;
+  libellelangue:	string;
   
   }

@@ -17,12 +17,12 @@
                     <div class="col" style="padding: 10px; font-size: large;">
                       <div class="row">
                         <div class="col-sm-4">Id SIM</div>
-                        <div class="col-sm-8">: {{ simEdite.simid }}</div>
+                        <div class="col-sm-8">: {{ simEdite.simID }}</div>
                       </div>
       
                       <div class="row">
                         <div class="col-sm-4">PAYS</div>
-                        <div class="col-sm-8">: {{ simEdite.idpays }}</div>
+                        <div class="col-sm-8">: {{ simEdite.idPays }}</div>
                       </div>
       
                       <div class="row">
@@ -90,12 +90,12 @@
                   <div class="row">
                       <div class="col-md-3">
                         <mat-form-field class="example-full-width">
-                            <input matInput placeholder="ID " [(ngModel)]="simEdite.simid" name="simid" required>
+                            <input matInput placeholder="ID " [(ngModel)]="simEdite.simID" name="simID" required>
                           </mat-form-field>
                       </div>
                       <div class="col-md-5">
                           <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Pays" [(ngModel)]="simEdite.idpays" name="idpays" required>
+                            <input matInput placeholder="Pays" [(ngModel)]="simEdite.idPays" name="idPays" required>
                           </mat-form-field>
                       </div>
                       <div class="col-md-4">
@@ -141,7 +141,7 @@
                   <div class="row">
                     <div class="col-md-4">
                       <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Site Web " [(ngModel)]="simEdite.sim_webdite" name="sim_webdite" required>
+                        <input matInput placeholder="Site Web " [(ngModel)]="simEdite.sim_webdite" name="sim_webdite" >
                       </mat-form-field>
                     </div>
 
@@ -179,12 +179,12 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                   <mat-form-field class="example-full-width">
-                                                      <input matInput placeholder="Id SIM " [(ngModel)]="sim.simid" name="simid" required>
+                                                      <input matInput placeholder="Id SIM " [(ngModel)]="sim.simID" name="simID" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <mat-form-field class="example-full-width">
-                                                      <input matInput placeholder="Pays" [(ngModel)]="sim.idpays" name="idpays" required>
+                                                      <input matInput placeholder="Pays" [(ngModel)]="sim.idPays" name="idPays" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-4">
@@ -230,7 +230,7 @@
                                             <div class="row">
                                               <div class="col-md-4">
                                                 <mat-form-field class="example-full-width">
-                                                  <input matInput placeholder="Site web" type="text" [(ngModel)]="sim.sim_webdite" name="sim_webdite" required>
+                                                  <input matInput placeholder="Site web" type="text" [(ngModel)]="sim.sim_webdite" name="sim_webdite" >
                                                 </mat-form-field>
                                               </div>
 
@@ -261,15 +261,15 @@
                                 <table mat-table [dataSource]="dataSource" matSort class="table">
                               
                                   <!-- ID Column -->
-                                  <ng-container matColumnDef="simid">
+                                  <ng-container matColumnDef="simID">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID-SIM </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.simid}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.simID}} </td>
                                   </ng-container>
                               
                                   <!-- Pays Column -->
-                                  <ng-container matColumnDef="idpays">
+                                  <ng-container matColumnDef="idPays">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> PAYS </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.idpays}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.idPays}} </td>
                                   </ng-container>
                               
                                   <!-- Capitale Column -->
@@ -328,11 +328,11 @@
                                         <mat-icon>more_vert</mat-icon>
                                       </button>
                                       <mat-menu #menuOption="matMenu">
-                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#afficheModal" (click)="onEdite(row.simid)">
+                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#afficheModal" (click)="onEdite(row.simID)">
                                           <mat-icon>description</mat-icon>
                                           <span>Afficher</span>
                                         </button>
-                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#myModal" (click)="onEdite(row.simid)">
+                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#myModal" (click)="onEdite(row.simID)">
                                           <mat-icon>app_registration</mat-icon>
                                           <span>Modifier</span>
                                         </button>

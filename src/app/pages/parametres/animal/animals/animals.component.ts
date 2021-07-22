@@ -24,7 +24,7 @@ const NAMES: string[] = [
   styleUrls: ['./animals.component.css']
 })
 export class AnimalsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['animalid', 'animaltypeid', 'gender', 'age','min', 'max', 'racefr', 'race_en', 'race_pt', 'race_al', 'race_di', 'race_ga', 'race_go','race_ha', 'race_je', 'race_ma', 'race_mo', 'race_pu', 'race_wo', 'active', 'star'];
+  displayedColumns: string[] = ['id', 'animaltypeid', 'gender', 'age','min', 'max', 'racefr', 'race_en', 'race_pt', 'race_al', 'race_di', 'race_ga', 'race_go','race_ha', 'race_je', 'race_ma', 'race_mo', 'race_pu', 'race_wo', 'active', 'star'];
   dataSource: MatTableDataSource<AnimalData>;
 
   //creation d'un instance de animal connecte au formulaire d'ajout 
@@ -100,7 +100,7 @@ export class AnimalsComponent implements AfterViewInit {
 
   onSave(){
 
-    this.animalService.getAnimal(this.animal.animalid).subscribe(
+    this.animalService.getAnimal(this.animal.id).subscribe(
       responce => {
         //Operation si le animal existe deja
         this.notificationService.showNotification('danger', 'Echec : Ce animal exist deja !<br>Merci de changer les identifients');
@@ -153,7 +153,7 @@ export class AnimalsComponent implements AfterViewInit {
   onEdite(idAnimal : string){
     this.animalService.getAnimal(idAnimal).subscribe(
       responce => {
-        this.animalEdite.animalid = responce['animalid'];
+        this.animalEdite.id = responce['id'];
         this.animalEdite.animaltypeid = responce['animaltypeid'];
         this.animalEdite.conformations_en = responce['conformations_en'];
         this.animalEdite.conformations_fr = responce['conformations_fr'];

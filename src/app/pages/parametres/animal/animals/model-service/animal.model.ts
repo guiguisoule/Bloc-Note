@@ -1,7 +1,7 @@
 export class AnimalData {
     active: number;
     age:	number;
-    animalid: string;
+    id: string;
     animaltypeid: string;
     conformations_en: string;
     conformations_fr: string;

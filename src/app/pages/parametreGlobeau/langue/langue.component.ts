@@ -21,7 +21,7 @@ const NAMES: string[] = [
   styleUrls: ['./langue.component.css']
 })
 export class LangueComponent implements AfterViewInit {
-  displayedColumns: string[] = ['codelang', 'libellelang', 'star'];
+  displayedColumns: string[] = ['codelangue', 'libellelangue', 'star'];
   dataSource: MatTableDataSource<LangueData>;
 
   //creation d'un instance de langue connecte au formulaire d'ajout 
@@ -81,7 +81,7 @@ export class LangueComponent implements AfterViewInit {
 
   onSave(){
 
-    this.langueService.getLangue(this.langue.codelang).subscribe(
+    this.langueService.getLangue(this.langue.codelangue).subscribe(
       responce => {
         //Operation si le langue existe deja
         this.notificationService.showNotification('danger', 'Echec : Ce langue exist deja !<br>Merci de changer les identifients');
@@ -124,8 +124,8 @@ export class LangueComponent implements AfterViewInit {
   onEdite(idLangue : string){
     this.langueService.getLangue(idLangue).subscribe(
       responce => {
-        this.langueEdite.codelang = responce['codelang'];
-        this.langueEdite.libellelang = responce['libellelang'];
+        this.langueEdite.codelangue = responce['codelangue'];
+        this.langueEdite.libellelangue = responce['libellelangue'];
         console.log(responce)
       },
       error => {

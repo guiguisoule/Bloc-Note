@@ -133,13 +133,13 @@ export const TABLEAU_BORD: RouteInfo[] = [
       class: '' 
     },
     { 
-      path: '/animaux', 
+      path: '/animals', 
       title: 'Animaux',  
       icon: 'dashboard', 
       class: '' 
     },
     { 
-      path: '/type-animaux', 
+      path: '/animal-type', 
       title: 'Type Animaux',  
       icon: 'dashboard', 
       class: '' 
@@ -189,18 +189,6 @@ export const TABLEAU_BORD: RouteInfo[] = [
     { 
       path: '/postes', 
       title: 'Postes',  
-      icon: 'dashboard', 
-      class: '' 
-    },
-    { 
-      path: '/animals', 
-      title: 'Animals',  
-      icon: 'dashboard', 
-      class: '' 
-    },
-    { 
-      path: '/animal-type', 
-      title: 'Type Animal',  
       icon: 'dashboard', 
       class: '' 
     },

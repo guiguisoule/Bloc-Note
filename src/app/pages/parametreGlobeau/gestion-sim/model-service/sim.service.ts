@@ -15,7 +15,7 @@ export class SimService {
   }
 
   getSim(id: string): Observable<Object> {
-    return this.http.get(`${this.URL}/sigle/${id}`);
+    return this.http.get(`${this.URL}/id/${id}`);
   }
 
   createSim(sim: Object): Observable<Object> {

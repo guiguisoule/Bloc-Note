@@ -33,6 +33,15 @@ import { AnimalService } from './pages/parametres/animal/animals/model-service/a
 import { DeviseService } from './pages/parametreGlobeau/devises/model-service/devise.service';
 import { LangueService } from './pages/parametreGlobeau/langue/model-service/langue.service';
 import { SimService } from './pages/parametreGlobeau/gestion-sim/model-service/sim.service';
+import { DecoupageAdminService } from './pages/parametres/decoupage-admin/model-service/decoupage-admin.service';
+import { Niveau1Service } from './pages/parametres/uniteAdmin/niveau1/model-service/niveau1.service';
+import { Niveau2Service } from './pages/parametres/uniteAdmin/niveau2/model-service/niveau2.service';
+import { Niveau3Service } from './pages/parametres/uniteAdmin/niveau3/model-service/niveau3.service';
+import { TypeMarcheService } from './pages/parametres/type-marche/model-service/type-marche.service';
+import { PeriodiciteMarketService } from './pages/parametres/periodicite-marche/model-service/periodicite-market.service';
+import { VocationMarketService } from './pages/parametres/vocation-marches/model-service/vocation-market.service';
+import { PeriodiciteEnquetteService } from './pages/parametres/periodicite-enquettes/model-service/periodicite-enquette.service';
+import { RaceService } from './pages/parametres/race/model-service/race.service';
 
 
 @NgModule({
@@ -63,7 +72,16 @@ import { SimService } from './pages/parametreGlobeau/gestion-sim/model-service/s
     AnimalService,
     DeviseService,
     LangueService,
-    SimService
+    SimService,
+    DecoupageAdminService,
+    Niveau1Service,
+    Niveau2Service,
+    Niveau3Service,
+    TypeMarcheService,
+    PeriodiciteMarketService,
+    VocationMarketService,
+    PeriodiciteEnquetteService,
+    RaceService
   ],
   bootstrap: [AppComponent]
 })

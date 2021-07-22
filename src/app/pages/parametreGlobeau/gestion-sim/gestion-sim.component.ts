@@ -28,7 +28,7 @@ const NAMES: string[] = [
   styleUrls: ['./gestion-sim.component.css']
 })
 export class GestionSimComponent implements AfterViewInit {
-  displayedColumns: string[] = ['simid', 'idpays', 'nom_sim', 'description','sim_type', 'sim_tel', 'sim_bp', 'sim_mel',  'sim_webdite', 'contact', 'star'];
+  displayedColumns: string[] = ['simID', 'idPays', 'nom_sim', 'description','sim_type', 'sim_tel', 'sim_bp', 'sim_mel',  'sim_webdite', 'contact', 'star'];
   dataSource: MatTableDataSource<SimData>;
 
   //creation d'un instance de sim connecte au formulaire d'ajout 
@@ -88,7 +88,7 @@ export class GestionSimComponent implements AfterViewInit {
 
   onSave(){
 
-    this.simService.getSim(this.sim.simid).subscribe(
+    this.simService.getSim(this.sim.simID).subscribe(
       responce => {
         //Operation si le sim existe deja
         this.notificationService.showNotification('danger', 'Echec : Ce sim exist deja !<br>Merci de changer les identifients');
@@ -115,7 +115,7 @@ export class GestionSimComponent implements AfterViewInit {
 
   onSaveEdite(){
      //initialisation de dans_ci par defaut
-     this.sim.sim_logo = "default";
+     this.sim.sim_logo = {};
 
      this.simService.createSim(this.simEdite).subscribe(
        responce => {
@@ -133,8 +133,8 @@ export class GestionSimComponent implements AfterViewInit {
   onEdite(idSim : string){
     this.simService.getSim(idSim).subscribe(
       responce => {
-        this.simEdite.simid = responce['simid'];
-        this.simEdite.idpays = responce['idpays'];
+        this.simEdite.simID = responce['simID'];
+        this.simEdite.idPays = responce['idPays'];
         this.simEdite.nom_sim = responce['nom_sim'];
         this.simEdite.description = responce['description'];
         this.simEdite.sim_type = responce['sim_type'];

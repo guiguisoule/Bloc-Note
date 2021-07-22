@@ -15,7 +15,7 @@ export class LangueService {
   }
 
   getLangue(id: string): Observable<Object> {
-    return this.http.get(`${this.URL}/sigle/${id}`);
+    return this.http.get(`${this.URL}/id/${id}`);
   }
 
   createLangue(langue: Object): Observable<Object> {

@@ -18,12 +18,12 @@
 
                       <div class="row">
                         <div class="col-sm-4">Id</div>
-                        <div class="col-sm-8">: {{ langueEdite.codelang }}</div>
+                        <div class="col-sm-8">: {{ langueEdite.codelangue }}</div>
                       </div>
       
                       <div class="row">
                         <div class="col-sm-4">PAYS</div>
-                        <div class="col-sm-8">: {{ langueEdite.libellelang }}</div>
+                        <div class="col-sm-8">: {{ langueEdite.libellelangue }}</div>
                       </div>
       
                     </div>
@@ -53,12 +53,12 @@
 
                     <div class="col-md-3">
                       <mat-form-field class="example-full-width">
-                          <input matInput placeholder="ID" [(ngModel)]="langueEdite.codelang" name="codelang" disabled>
+                          <input matInput placeholder="ID" [(ngModel)]="langueEdite.codelangue" name="codelangue" disabled>
                         </mat-form-field>
                     </div>
                     <div class="col-md-5">
                         <mat-form-field class="example-full-width">
-                          <input matInput placeholder="Langue" [(ngModel)]="langueEdite.libellelang" name="libellelang" required>
+                          <input matInput placeholder="Langue" [(ngModel)]="langueEdite.libellelangue" name="libellelangue" required>
                         </mat-form-field>
                     </div>
                     
@@ -92,12 +92,12 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                   <mat-form-field class="example-full-width">
-                                                      <input matInput placeholder="ID" [(ngModel)]="codelang" name="codelang" required>
+                                                      <input matInput placeholder="ID" [(ngModel)]="langue.codelangue" name="codelangue" required>
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <mat-form-field class="example-full-width">
-                                                      <input matInput placeholder="Langue" [(ngModel)]="langue.libellelang" name="libellelang" required>
+                                                      <input matInput placeholder="Langue" [(ngModel)]="langue.libellelangue" name="libellelangue" required>
                                                     </mat-form-field>
                                                 </div>
                                                 
@@ -122,15 +122,15 @@
                                 <table mat-table [dataSource]="dataSource" matSort class="table">
                               
                                   <!-- ID Column -->
-                                  <ng-container matColumnDef="codelang">
+                                  <ng-container matColumnDef="codelangue">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID-Langue </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.codelang}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.codelangue}} </td>
                                   </ng-container>
                               
                                   <!-- Langue Column -->
-                                  <ng-container matColumnDef="libellelang">
+                                  <ng-container matColumnDef="libellelangue">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Langue </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.libellelang}} </td>
+                                    <td mat-cell *matCellDef="let row"> {{row.libellelangue}} </td>
                                   </ng-container>
                             
                                   <!-- Star Column -->
@@ -141,11 +141,11 @@
                                         <mat-icon>more_vert</mat-icon>
                                       </button>
                                       <mat-menu #menuOption="matMenu">
-                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#afficheModal" (click)="onEdite(row.codelang)">
+                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#afficheModal" (click)="onEdite(row.codelangue)">
                                           <mat-icon>description</mat-icon>
                                           <span>Afficher</span>
                                         </button>
-                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#myModal" (click)="onEdite(row.codelang)">
+                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#myModal" (click)="onEdite(row.codelangue)">
                                           <mat-icon>app_registration</mat-icon>
                                           <span>Modifier</span>
                                         </button>
