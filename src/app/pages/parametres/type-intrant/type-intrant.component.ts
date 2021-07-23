@@ -3,13 +3,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { InputTypeData } from './model-service/inputType.model';
+import { TypeIntrantService } from './model-service/type-intrant.service';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +22,137 @@ const NAMES: string[] = [
   styleUrls: ['./type-intrant.component.css']
 })
 export class TypeIntrantComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['inputTypeID',  'Name_FR', 'Name_EN', 'Name_PT', 'isFertilizer', 'Active', 'star'];
+  dataSource: MatTableDataSource<InputTypeData>;
+
+  //creation d'un instance de inputType connecte au formulaire d'ajout 
+  inputType: InputTypeData = new InputTypeData();
+
+  //creation d'un instance de inputType connecte au formulaire d'ajout 
+  inputTypeEdite: InputTypeData = new InputTypeData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private inputTypeService: TypeIntrantService,
+    private notificationService: NotificationsService) {
+    // Create 100 inputType
+    // const inputTypeData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des inputType
+    // this.chargerListInputType();
+
+    this.inputTypeService.getInputTypeList().subscribe(
+      responce => {
+        const inputTypeData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(inputTypeData);
+      },
+      error => {
+        console.log(error);
+        const inputTypeData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(inputTypeData);
+      });
+
+  }
+
+  chargerListInputType(){
+    this.inputTypeService.getInputTypeList().subscribe(
+      responce => {
+        console.log(responce)
+        const inputTypeData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(inputTypeData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const inputTypeData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(inputTypeData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.inputTypeService.getInputType(this.inputType.inputTypeID).subscribe(
+      responce => {
+        //Operation si le inputType existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce inputType exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau inputType
+
+        this.inputTypeService.createInputType(this.inputType).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListInputType();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+     //initialisation de dans_ci par defaut
+     
+     this.inputTypeService.createInputType(this.inputTypeEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListInputType();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idInputType : string){
+    this.inputTypeService.getInputType(idInputType).subscribe(
+      responce => {
+        this.inputTypeEdite.inputTypeID = responce['inputTypeID'];
+        this.inputTypeEdite.Name_EN = responce['Name_EN'];
+        this.inputTypeEdite.Name_FR = responce['Name_FR'];
+        this.inputTypeEdite.Name_PT = responce['Name_PT'];
+        this.inputTypeEdite.Active = responce['Active'];
+        this.inputTypeEdite.isFertilizer = responce['isFertilizer'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteInputType(id : string){
+    this.inputTypeService.deleteInputType(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListInputType();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListInputType();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +164,4 @@ export class TypeIntrantComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

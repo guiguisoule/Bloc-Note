@@ -5,24 +5,25 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class Niveau3Service {
-  URL : string = "http://localhost:8083/sim3g/api/admin_niv3";
+export class PartenaireService {
+
+  URL : string = "http://localhost:8082/sim2g/api/partenaire";
 
   constructor( private http: HttpClient) { }
 
-  getNiveau3List(): Observable<any>{
+  getPartenaireList(): Observable<any>{
     return this.http.get<any[]>(`${this.URL}/all`);
   }
 
-  getNiveau3(id: string): Observable<Object> {
+  getPartenaire(id: string): Observable<Object> {
     return this.http.get(`${this.URL}/id/${id}`);
   }
 
-  createNiveau3(niveau3: Object): Observable<Object> {
-    return this.http.post(`${this.URL}/create`, niveau3);
+  createPartenaire(partenaire: Object): Observable<Object> {
+    return this.http.post(`${this.URL}/create`, partenaire);
   }
 
-  deleteNiveau3(id: string): Observable<any> {
+  deletePartenaire(id: string): Observable<any> {
     return this.http.delete(`${this.URL}/${id}`, { responseType: 'text' });
   }
 }

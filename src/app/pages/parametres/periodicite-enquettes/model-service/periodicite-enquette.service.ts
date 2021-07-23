@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PeriodiciteEnquetteService {
-
  
   URL : string = "http://localhost:8082/sim2g/api/periodicite-Enquette";
 

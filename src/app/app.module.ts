@@ -42,6 +42,12 @@ import { PeriodiciteMarketService } from './pages/parametres/periodicite-marche/
 import { VocationMarketService } from './pages/parametres/vocation-marches/model-service/vocation-market.service';
 import { PeriodiciteEnquetteService } from './pages/parametres/periodicite-enquettes/model-service/periodicite-enquette.service';
 import { RaceService } from './pages/parametres/race/model-service/race.service';
+import { SecteursService } from './pages/parametres/secteur-activite/model-service/secteurs.service';
+import { UniteMesureService } from './pages/parametres/unite-mesure/model-service/unite-mesure.service';
+import { TypeIntrantService } from './pages/parametres/type-intrant/model-service/type-intrant.service';
+import { PartenaireService } from './pages/parametres/partenaires/model-service/partenaire.service';
+import { PosteService } from './pages/parametres/postes/model-service/poste.service';
+import { AssociationService } from './pages/parametres/association/model-service/association.service';
 
 
 @NgModule({
@@ -81,7 +87,13 @@ import { RaceService } from './pages/parametres/race/model-service/race.service'
     PeriodiciteMarketService,
     VocationMarketService,
     PeriodiciteEnquetteService,
-    RaceService
+    RaceService,
+    SecteursService,
+    UniteMesureService,
+    TypeIntrantService,
+    PartenaireService,
+    PosteService,
+    AssociationService
   ],
   bootstrap: [AppComponent]
 })

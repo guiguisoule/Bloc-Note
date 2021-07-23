@@ -5,24 +5,26 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class Niveau3Service {
-  URL : string = "http://localhost:8083/sim3g/api/admin_niv3";
+export class UniteMesureService {
+
+  
+  URL : string = "http://localhost:8082/sim2g/api/unite-mesure";
 
   constructor( private http: HttpClient) { }
 
-  getNiveau3List(): Observable<any>{
+  getUniteMesureList(): Observable<any>{
     return this.http.get<any[]>(`${this.URL}/all`);
   }
 
-  getNiveau3(id: string): Observable<Object> {
+  getUniteMesure(id: string): Observable<Object> {
     return this.http.get(`${this.URL}/id/${id}`);
   }
 
-  createNiveau3(niveau3: Object): Observable<Object> {
-    return this.http.post(`${this.URL}/create`, niveau3);
+  createUniteMesure(uniteMesure: Object): Observable<Object> {
+    return this.http.post(`${this.URL}/create`, uniteMesure);
   }
 
-  deleteNiveau3(id: string): Observable<any> {
+  deleteUniteMesure(id: string): Observable<any> {
     return this.http.delete(`${this.URL}/${id}`, { responseType: 'text' });
   }
 }

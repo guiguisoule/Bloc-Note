@@ -3,13 +3,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { PosteService } from './model-service/poste.service';
+import { PosteData } from './model-service/postes.model';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
+
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +23,132 @@ const NAMES: string[] = [
   styleUrls: ['./postes.component.css']
 })
 export class PostesComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['posteid', 'libposte', 'star'];
+  dataSource: MatTableDataSource<PosteData>;
+
+  //creation d'un instance de poste connecte au formulaire d'ajout 
+  poste: PosteData = new PosteData();
+
+  //creation d'un instance de poste connecte au formulaire d'ajout 
+  posteEdite: PosteData = new PosteData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private posteService: PosteService,
+    private notificationService: NotificationsService) {
+    // Create 100 poste
+    // const posteData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des poste
+    // this.chargerListPoste();
+
+    this.posteService.getPosteList().subscribe(
+      responce => {
+        const posteData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(posteData);
+      },
+      error => {
+        console.log(error);
+        const posteData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(posteData);
+      });
+
+  }
+
+  chargerListPoste(){
+    this.posteService.getPosteList().subscribe(
+      responce => {
+        console.log(responce)
+        const posteData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(posteData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const posteData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(posteData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.posteService.getPoste(this.poste.posteid).subscribe(
+      responce => {
+        //Operation si le poste existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce poste exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau poste
+
+        this.posteService.createPoste(this.poste).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListPoste();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+
+     this.posteService.createPoste(this.posteEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListPoste();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idPoste : string){
+    this.posteService.getPoste(idPoste).subscribe(
+      responce => {
+        this.posteEdite.posteid = responce['posteid'];
+        this.posteEdite.libposte = responce['libposte'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeletePoste(id : string){
+    this.posteService.deletePoste(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListPoste();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListPoste();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +160,4 @@ export class PostesComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

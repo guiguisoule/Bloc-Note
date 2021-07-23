@@ -3,13 +3,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
+import { SecteursData } from './model-service/secteurs.model';
+import { SecteursService } from './model-service/secteurs.service';
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +21,136 @@ const NAMES: string[] = [
   styleUrls: ['./secteur-activite.component.css']
 })
 export class SecteurActiviteComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['sectorid',  'Name_FR', 'Name_EN', 'Name_PT', 'dates', 'star'];
+  dataSource: MatTableDataSource<SecteursData>;
+
+  //creation d'un instance de secteurs connecte au formulaire d'ajout 
+  secteurs: SecteursData = new SecteursData();
+
+  //creation d'un instance de secteurs connecte au formulaire d'ajout 
+  secteursEdite: SecteursData = new SecteursData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private secteursService: SecteursService,
+    private notificationService: NotificationsService) {
+    // Create 100 secteurs
+    // const secteursData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des secteurs
+    // this.chargerListSecteurs();
+
+    this.secteursService.getSecteursList().subscribe(
+      responce => {
+        const secteursData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(secteursData);
+      },
+      error => {
+        console.log(error);
+        const secteursData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(secteursData);
+      });
+
+  }
+
+  chargerListSecteurs(){
+    this.secteursService.getSecteursList().subscribe(
+      responce => {
+        console.log(responce)
+        const secteursData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(secteursData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const secteursData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(secteursData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.secteursService.getSecteurs(this.secteurs.sectorid).subscribe(
+      responce => {
+        //Operation si le secteurs existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce secteurs exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau secteurs
+
+        this.secteursService.createSecteurs(this.secteurs).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListSecteurs();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+     //initialisation de dans_ci par defaut
+     
+     this.secteursService.createSecteurs(this.secteursEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListSecteurs();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idSecteurs : string){
+    this.secteursService.getSecteurs(idSecteurs).subscribe(
+      responce => {
+        this.secteursEdite.sectorid = responce['sectorid'];
+        this.secteursEdite.Name_EN = responce['Name_EN'];
+        this.secteursEdite.Name_FR = responce['Name_FR'];
+        this.secteursEdite.Name_PT = responce['Name_PT'];
+        this.secteursEdite.dates = responce['dates'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteSecteurs(id : string){
+    this.secteursService.deleteSecteurs(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListSecteurs();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListSecteurs();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +162,4 @@ export class SecteurActiviteComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class Niveau2Service {
-  URL : string = "http://localhost:8082/sim2g/api/niveau2";
+  URL : string = "http://localhost:8082/sim2g/api/admin_niv2";
 
   constructor( private http: HttpClient) { }
 

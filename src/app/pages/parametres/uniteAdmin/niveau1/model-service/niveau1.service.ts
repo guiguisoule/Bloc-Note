@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class Niveau1Service {
   
-  URL : string = "http://localhost:8082/sim2g/api/niveau1";
+  URL : string = "http://localhost:8082/sim2g/api/admin_niv1";
 
   constructor( private http: HttpClient) { }
 

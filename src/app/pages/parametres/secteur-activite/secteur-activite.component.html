@@ -1,102 +1,158 @@
 <div class="main-content">
     <div class="container-fluid">
+       <!-- Modal afficher secteurs -->
+       <div class="modal fade" id="afficheModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content text-width" >
+            <div class="modal-body">
+
+              <div class="container">
+                  <div class="row">
+                    <div class="col" style="background-color: #e9ecef; padding: 10px;">
+                      <h3 align="center">Detail</h3>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col" style="padding: 10px; font-size: large;">
+                      <div class="row">
+                        <div class="col-sm-4">ID-Secteur</div>
+                        <div class="col-sm-8">: {{ secteursEdite.sectorid }}</div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-4">Nom FR</div>
+                        <div class="col-sm-8">: {{ secteursEdite.Name_FR }}</div>
+                      </div>
+      
+                      <div class="row">
+                        <div class="col-sm-4">Nom EN</div>
+                        <div class="col-sm-8">: {{ secteursEdite.Name_EN }}</div>
+                      </div>
+                      
+                      <div class="row">
+                        <div class="col-sm-4">Nom PT</div>
+                        <div class="col-sm-8">: {{ secteursEdite.Name_PT }}</div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-4">Dates</div>
+                        <div class="col-sm-8">: {{ secteursEdite.dates }}</div>
+                      </div>
+      
+                    </div>
+                  </div>
+                  
+              </div>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" >OK</button>
+            </div>
+        </div>
+        </div>
+      </div>
+    <!-- fin modal Afficher element -->
+
+      <!-- Modal edit element -->
+      <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">PERIODICITE MARCHE</h5>
+            </div>
+            <div class="modal-body">
+              <form #secteursEditeForm=ngForm>
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="ID" [(ngModel)]="secteursEdite.sectorid" name="sectorid" required>
+                      </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="dates" [(ngModel)]="secteursEdite.dates" name="dates" required>
+                      </mat-form-field>
+                  </div>
+              </div>
+            
+              <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Nom FR" type="text" [(ngModel)]="secteursEdite.Name_FR" name="Name_FR" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Nom EN" type="text" [(ngModel)]="secteursEdite.Name_EN" name="Name_EN" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Nom PT" type="text" [(ngModel)]="secteursEdite.Name_PT" name="Name_PT" required>
+                      </mat-form-field>
+                    </div>
+              </div>
+                
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" >Fermer</button>
+            <button type="button" class="btn btn-primary" [disabled]=!secteursEditeForm.valid (click)="onSaveEdite()" data-bs-toggle="modal" data-bs-target="#operationModal" data-bs-dismiss="modal">Modiffier</button>
+          </div>
+        </div>
+        </div>
+    </div>
+    <!-- fin modal -->
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-header-info">
                         <div class="row justify-content-center">
                             <div class="col-md-10">
-                                <h2 align="center" class="titre-tableau">Titre du tableau</h2>
+                                <h2 align="center" class="titre-tableau">FORMULAIRE PERIODICITE MARCHE</h2>
                             </div>
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-10 boxRecherche">
                                 <div class="row ">
                                     <div class="col">
-                                        <form #animalForm=ngForm>
+                                        <form #secteursForm=ngForm>
                                             <div class="row">
-                                                <div class="col-md-8">
+                                                <div class="col-md-3">
+                                                  <mat-form-field class="example-full-width">
+                                                      <input matInput placeholder="sectorid" [(ngModel)]="secteurs.sectorid" name="sectorid" required>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div class="col-md-3">
                                                     <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Animal ID" name="animalId">
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4" >
-                                                    <mat-form-field class="example-full-width"  >
-                                                     
-                                                        <mat-label >Animal Type</mat-label>
-                                                        <select  matNativeControl name="animalTypeId" required>
-                                                          <option value="">val</option>
-                                                          <option value="">val</option>
-                                                          <option value="">val</option>
-                                                          <option value="">val</option>
-                                                          <option value="">val</option>
-                                                        </select>
-                                                     
-                                                    </mat-form-field>
-                                                </div>
-                
+                                                        <input matInput placeholder="dates" [(ngModel)]="secteurs.dates" name="dates" required>
+                                                      </mat-form-field>
+                                                  </div>
                                                 
                                             </div>
-                                            
+                                          
                                             <div class="row">
                                                 <div class="col-md-4">
+                                                  <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Nom FR" type="text" [(ngModel)]="secteurs.Name_FR" name="Name_FR" required>
+                                                  </mat-form-field>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Nom EN" type="text" [(ngModel)]="secteurs.Name_EN" name="Name_EN" required>
+                                                  </mat-form-field>
+                                                </div>
+                                                <div class="col-md-4">
                                                     <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Age" name="age" required>
-                                                        </mat-form-field>
-                                                    </div>
-                                                
-                                                    <div class="col-md-4">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Max" name="max" required>
-                                                        </mat-form-field>
-                                                    </div>
-                                                
-                                                    <div class="col-md-4">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Min" name="min" required>
-                                                        </mat-form-field>
-                                                    </div>
+                                                      <input matInput placeholder="Nom PT" type="text" [(ngModel)]="secteurs.Name_PT" name="Name_PT" required>
+                                                    </mat-form-field>
+                                                  </div>
                                             </div>
-                
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Race en FR" name="raceFR" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Conformation en FR" name="confFR" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Race en EN" name="raceEN" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Conformation en EN" name="confEN" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Race en PT" name="racePT" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Conformation en PT" name="confPT" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            <button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="savePrixBetail()">Enregistrer</button>                                            
+                                            
+                                            <button mat-raised-button type="submit" class="btn btn-success pull-right" [disabled]=!secteursForm.valid (click)="onSave()">Enregistrer</button>                                            
                                             <button mat-raised-button type="reset" class="btn btn-danger pull-right">Effacer</button>                                            
 
                                         </form>
@@ -115,28 +171,54 @@
                               <div class="mat-elevation-z8">
                                 <table mat-table [dataSource]="dataSource" matSort class="table">
                               
-                                  <!-- ID Column -->
-                                  <ng-container matColumnDef="id">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                                  <!-- sectorid Column -->
+                                  <ng-container matColumnDef="sectorid">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID-PERIODICITE </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.sectorid}} </td>
                                   </ng-container>
                               
-                                  <!-- Progress Column -->
-                                  <ng-container matColumnDef="progress">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+                                  <!-- Name_FR Column -->
+                                  <ng-container matColumnDef="Name_FR">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom FR </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.Name_FR}} </td>
                                   </ng-container>
                               
-                                  <!-- Name Column -->
-                                  <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                                  <!-- Name_EN Column -->
+                                  <ng-container matColumnDef="Name_EN">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom EN </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.Name_EN}} </td>
                                   </ng-container>
                               
-                                  <!-- Fruit Column -->
-                                  <ng-container matColumnDef="fruit">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fruit </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+                                  <!-- Name_PT Column -->
+                                  <ng-container matColumnDef="Name_PT">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom PT </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.Name_PT}} </td>
+                                  </ng-container>
+
+                                  <!-- sectorid Column -->
+                                  <ng-container matColumnDef="dates">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> FREQUENCE </th>
+                                    <td mat-cell *matCellDef="let row"> {{row.dates}} </td>
+                                  </ng-container>
+
+                                  <!-- Star Column -->
+                                  <ng-container matColumnDef="star" stickyEnd>
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let row">
+                                      <button mat-icon-button color="primary" [matMenuTriggerFor]="menuOption" aria-label="Option de la ligne selectionne">
+                                        <mat-icon>more_vert</mat-icon>
+                                      </button>
+                                      <mat-menu #menuOption="matMenu">
+                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#afficheModal" (click)="onEdite(row.sectorid)">
+                                          <mat-icon>description</mat-icon>
+                                          <span>Afficher</span>
+                                        </button>
+                                        <button mat-menu-item data-bs-toggle="modal" data-bs-target="#myModal" (click)="onEdite(row.sectorid)">
+                                          <mat-icon>app_registration</mat-icon>
+                                          <span>Modifier</span>
+                                        </button>
+                                      </mat-menu>
+                                    </td>
                                   </ng-container>
                               
                                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

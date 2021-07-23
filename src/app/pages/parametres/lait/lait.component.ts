@@ -3,13 +3,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { LaitService } from './model-service/lait.service';
+import { LaitData } from './model-service/oeuflait.model';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +22,137 @@ const NAMES: string[] = [
   styleUrls: ['./lait.component.css']
 })
 export class LaitComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id_ol', 'libelle_ol', 'unite_ol' , 'star'];
+  dataSource: MatTableDataSource<LaitData>;
+
+  //creation d'un instance de animalType connecte au formulaire d'ajout 
+  lait: LaitData = new LaitData();
+
+  //creation d'un instance de animalType connecte au formulaire d'ajout 
+  laitEdite: LaitData = new LaitData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private laitService: LaitService,
+    private notificationService: NotificationsService) {
+    // Create 100 animalType
+    // const animalTypeData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des animalType
+    // this.chargerListLait();
+
+    this.laitService.getLaitList().subscribe(
+      responce => {
+        const laitData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(laitData);
+      },
+      error => {
+        console.log(error);
+        const laitData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(laitData);
+      });
+
+  }
+
+  chargerListLait(){
+    this.laitService.getLaitList().subscribe(
+      responce => {
+        // console.log(responce)
+        const laitData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(laitData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      },
+      error => {
+        console.log(error);
+        const animalTypeData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(animalTypeData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+
+  onSave(){
+
+    this.laitService.getLait(this.lait.id_ol).subscribe(
+      responce => {
+        //Operation si le animalType existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce animalType exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau animalType
+
+        this.laitService.createLait(this.lait).subscribe(
+          responce => {
+            // console.log(responce)
+            this.chargerListLait();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+
+     this.laitService.createLait(this.laitEdite).subscribe(
+       responce => {
+        //  console.log(responce)
+         this.chargerListLait();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idLait : string){
+    this.laitService.getLait(idLait).subscribe(
+      responce => {
+
+        this.laitEdite.id_ol = responce['id_ol'];
+        this.laitEdite.libelle_ol = responce['libelle_ol'];
+        this.laitEdite.unite_ol = responce['unite_ol'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteLait(id : string){
+    this.laitService.deleteLait(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListLait();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    this.chargerListLait();  
   }
 
   applyFilter(event: Event) {
@@ -54,22 +164,4 @@ export class LaitComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 
