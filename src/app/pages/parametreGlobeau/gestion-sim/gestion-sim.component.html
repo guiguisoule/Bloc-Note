@@ -88,16 +88,23 @@
             <div class="modal-body">
               <form #simEditeForm=ngForm>
                   <div class="row">
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <mat-form-field class="example-full-width">
                             <input matInput placeholder="ID " [(ngModel)]="simEdite.simID" name="simID" required>
                           </mat-form-field>
                       </div>
-                      <div class="col-md-5">
-                          <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Pays" [(ngModel)]="simEdite.idPays" name="idPays" required>
-                          </mat-form-field>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width"  >
+     
+                          <mat-label >Pays</mat-label>
+
+                          <select  matNativeControl [(ngModel)]="simEdite.idPays" name="idPays" required>
+                            <option *ngFor="let pays of paysList" value="{{pays.id}}">{{pays.nom_pays}}</option>
+                          </select>
+                       
+                        </mat-form-field>
                       </div>
+
                       <div class="col-md-4">
                           <mat-form-field class="example-full-width">
                             <input matInput placeholder="Nom SIM " [(ngModel)]="simEdite.nom_sim" name="nom_sim" required>

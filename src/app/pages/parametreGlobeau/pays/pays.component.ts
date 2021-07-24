@@ -3,6 +3,10 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { DeviseData } from '../devises/model-service/devise.model';
+import { DeviseService } from '../devises/model-service/devise.service';
+import { LangueData } from '../langue/model-service/langue.model';
+import { LangueService } from '../langue/model-service/langue.service';
 import { PaysData } from './model-service/pays.model';
 import { PaysService } from './model-service/pays.service';
 
@@ -31,11 +35,19 @@ export class PaysComponent implements AfterViewInit {
   //creation d'un instance de pays connecte au formulaire d'ajout 
   paysEdite: PaysData = new PaysData();
 
+  //liste des devises
+  deviseList : DeviseData[];
+
+  //liste des langues
+  langueList : LangueData[]; 
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private paysService: PaysService,
+    private deviseService: DeviseService,
+    private langueService: LangueService,
     private notificationService: NotificationsService) {
     // Create 100 pays
     // const paysData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
@@ -43,19 +55,20 @@ export class PaysComponent implements AfterViewInit {
     //chargement de la liste des pays
     // this.chargerListPays();
 
-    this.paysService.getPaysList().subscribe(
-      responce => {
-        const paysData = responce;
-        // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(paysData);
-      },
-      error => {
-        console.log(error);
-        const paysData = [];
-        // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(paysData);
-      });
-
+    // this.paysService.getPaysList().subscribe(
+    //   responce => {
+    //     const paysData = responce;
+    //     // Assign the data to the data source for the table to render
+    //     this.dataSource = new MatTableDataSource(paysData);
+    //   },
+    //   error => {
+    //     console.log(error);
+    //     const paysData = [];
+    //     // Assign the data to the data source for the table to render
+    //     this.dataSource = new MatTableDataSource(paysData);
+    //   });
+    this.chargerListeDevise();
+    this.chargerListeLangue();
   }
 
   chargerListPays(){
@@ -79,6 +92,32 @@ export class PaysComponent implements AfterViewInit {
         this.dataSource.sort = this.sort;
       });
   }
+
+  chargerListeDevise(){
+    this.deviseService.getDeviseList().subscribe(
+     responce => {
+       console.log(responce)
+       this.deviseList = responce;
+       
+     },
+     error => {
+       console.log(error);
+     });
+    
+   }
+
+   chargerListeLangue(){
+    this.langueService.getLangueList().subscribe(
+     responce => {
+       console.log(responce)
+       this.langueList = responce;
+       
+     },
+     error => {
+       console.log(error);
+     });
+    
+   }
 
   onSave(){
 
@@ -158,7 +197,7 @@ export class PaysComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.chargerListPays();    
+    this.chargerListPays();
   }
 
   applyFilter(event: Event) {

@@ -109,16 +109,32 @@
                 </div>
               
                 <div class="row">
-                    <div class="col-md-4">
-                      <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Code Devise" type="text" [(ngModel)]="paysEdite.codedev" name="codedev" required>
-                      </mat-form-field>
-                    </div>
-                    <div class="col-md-4">
-                      <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Code Langue" type="text" [(ngModel)]="paysEdite.codelang" name="langue" required>
-                      </mat-form-field>
-                    </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width"  >
+ 
+                      <mat-label >Code Devise</mat-label>
+
+                      <select  matNativeControl [(ngModel)]="paysEdite.codedev" name="codedev" required>
+                        <option value=""></option>
+                        <option *ngFor="let devise of deviseList" value="{{devise.codedev}}">{{devise.libelledev}}</option>
+                      </select>
+                   
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width"  >
+ 
+                      <mat-label >Code Langue</mat-label>
+
+                      <select  matNativeControl [(ngModel)]="paysEdite.codelang" name="langue" required>
+                        <option value=""></option>
+                        <option *ngFor="let langue of langueList" value="{{langue.codelang}}">{{langue.libellelangue}}</option>
+                      </select>
+                   
+                    </mat-form-field>
+                  </div>
+
                     <div class="col-md-4">
                         <mat-form-field class="example-full-width">
                           <input matInput placeholder="Indicatif" type="text" [(ngModel)]="paysEdite.indicatif" name="indicatif" required>
@@ -183,16 +199,31 @@
                                             </div>
                                           
                                             <div class="row">
-                                                <div class="col-md-4">
-                                                  <mat-form-field class="example-full-width">
-                                                    <input matInput placeholder="Code Devise" type="text" [(ngModel)]="pays.codedev" name="codedev" required>
-                                                  </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4">
-                                                  <mat-form-field class="example-full-width">
-                                                    <input matInput placeholder="Code Langue" type="text" [(ngModel)]="pays.codelang" name="langue" required>
-                                                  </mat-form-field>
-                                                </div>
+                                              <div class="col-md-4">
+                                                <mat-form-field class="example-full-width"  >
+                             
+                                                  <mat-label >Code Devise</mat-label>
+                            
+                                                  <select  matNativeControl [(ngModel)]="pays.codedev" name="codedev" required>
+                                                    <option value=""></option>
+                                                    <option *ngFor="let devise of deviseList" value="{{devise.codedev}}">{{devise.libelledev}}</option>
+                                                  </select>
+                                               
+                                                </mat-form-field>
+                                              </div>
+                            
+                                              <div class="col-md-4">
+                                                <mat-form-field class="example-full-width"  >
+                             
+                                                  <mat-label >Code Langue</mat-label>
+                            
+                                                  <select  matNativeControl [(ngModel)]="pays.codelang" name="codelang" required>
+                                                    <option value=""></option>
+                                                    <option *ngFor="let langue of langueList" value="{{langue.codelangue}}">{{langue.libellelangue}}</option>
+                                                  </select>
+                                               
+                                                </mat-form-field>
+                                              </div>
                                                 <div class="col-md-4">
                                                     <mat-form-field class="example-full-width">
                                                       <input matInput placeholder="Indicatif" type="text" [(ngModel)]="pays.indicatif" name="indicatif" required>
@@ -296,7 +327,7 @@
                                   </tr>
                                 </table>
                               
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
                               </div>
                               
                         </div>

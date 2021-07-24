@@ -3,15 +3,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { PaysData } from '../pays/model-service/pays.model';
+import { PaysService } from '../pays/model-service/pays.service';
 import { SimData } from './model-service/sim.model';
 import { SimService } from './model-service/sim.service';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -37,11 +33,15 @@ export class GestionSimComponent implements AfterViewInit {
   //creation d'un instance de sim connecte au formulaire d'ajout 
   simEdite: SimData = new SimData();
 
+  //liste des pays
+  paysList: PaysData[];
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private simService: SimService,
+    private paysService: PaysService,
     private notificationService: NotificationsService) {
     // Create 100 sim
     // const simData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
@@ -49,18 +49,18 @@ export class GestionSimComponent implements AfterViewInit {
     //chargement de la liste des sim
     // this.chargerListSim();
 
-    this.simService.getSimList().subscribe(
-      responce => {
-        const simData = responce;
-        // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(simData);
-      },
-      error => {
-        console.log(error);
-        const simData = [];
-        // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(simData);
-      });
+    // this.simService.getSimList().subscribe(
+    //   responce => {
+    //     const simData = responce;
+    //     // Assign the data to the data source for the table to render
+    //     this.dataSource = new MatTableDataSource(simData);
+    //   },
+    //   error => {
+    //     console.log(error);
+    //     const simData = [];
+    //     // Assign the data to the data source for the table to render
+    //     this.dataSource = new MatTableDataSource(simData);
+    //   });
 
   }
 
@@ -85,6 +85,19 @@ export class GestionSimComponent implements AfterViewInit {
         this.dataSource.sort = this.sort;
       });
   }
+
+  chargerListePays(){
+    this.paysService.getPaysList().subscribe(
+     responce => {
+       console.log(responce)
+       this.paysList = responce;
+       
+     },
+     error => {
+       console.log(error);
+     });
+    
+   }
 
   onSave(){
 
@@ -164,6 +177,7 @@ export class GestionSimComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.chargerListePays();
     this.chargerListSim();    
   }
 

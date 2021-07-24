@@ -51,12 +51,12 @@
               <form #langueEditeForm=ngForm>
                 <div class="row">
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                       <mat-form-field class="example-full-width">
                           <input matInput placeholder="ID" [(ngModel)]="langueEdite.codelangue" name="codelangue" disabled>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md">
                         <mat-form-field class="example-full-width">
                           <input matInput placeholder="Langue" [(ngModel)]="langueEdite.libellelangue" name="libellelangue" required>
                         </mat-form-field>
@@ -90,12 +90,12 @@
                                     <div class="col">
                                         <form #langueForm=ngForm>
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                   <mat-form-field class="example-full-width">
                                                       <input matInput placeholder="ID" [(ngModel)]="langue.codelangue" name="codelangue" required>
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="col-md-5">
+                                                <div class="col-md">
                                                     <mat-form-field class="example-full-width">
                                                       <input matInput placeholder="Langue" [(ngModel)]="langue.libellelangue" name="libellelangue" required>
                                                     </mat-form-field>
@@ -162,7 +162,7 @@
                                   </tr>
                                 </table>
                               
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                                <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
                               </div>
                               
                         </div>

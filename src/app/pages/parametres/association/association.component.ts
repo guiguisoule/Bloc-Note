@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -106,7 +107,8 @@ export class AssociationComponent implements AfterViewInit {
       },
       error => {
         //Enregistrement du nouveau association
-
+        this.associationEdite.datemaj = "t";
+        this.associationEdite.datecre = "t";
         this.associationService.createAssociation(this.association).subscribe(
           responce => {
             console.log(responce)
@@ -127,6 +129,7 @@ export class AssociationComponent implements AfterViewInit {
 
   onSaveEdite(){
 
+    this.associationEdite.datemaj = "t";
      this.associationService.createAssociation(this.associationEdite).subscribe(
        responce => {
          console.log(responce)

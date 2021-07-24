@@ -51,12 +51,12 @@
             <form #deviseEditeForm=ngForm>
               <div class="row">
 
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <mat-form-field class="example-full-width">
                         <input matInput placeholder="ID" [(ngModel)]="deviseEdite.codedev" name="codedev" disabled>
                       </mat-form-field>
                   </div>
-                  <div class="col-md-5">
+                  <div class="col-md">
                       <mat-form-field class="example-full-width">
                         <input matInput placeholder="Devise" [(ngModel)]="deviseEdite.libelledev" name="libelledev" required>
                       </mat-form-field>
@@ -90,12 +90,12 @@
                                   <div class="col">
                                       <form #deviseForm=ngForm>
                                           <div class="row">
-                                              <div class="col-md-3">
+                                              <div class="col-md-4">
                                                 <mat-form-field class="example-full-width">
                                                     <input matInput placeholder="ID" [(ngModel)]="devise.codedev" name="codedev" required>
                                                   </mat-form-field>
                                               </div>
-                                              <div class="col-md-5">
+                                              <div class="col-md">
                                                   <mat-form-field class="example-full-width">
                                                     <input matInput placeholder="Devise" [(ngModel)]="devise.libelledev" name="libelledev" required>
                                                   </mat-form-field>
@@ -162,7 +162,7 @@
                                 </tr>
                               </table>
                             
-                              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                              <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
                             </div>
                             
                       </div>

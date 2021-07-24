@@ -16,7 +16,7 @@ export class AssociationService {
   }
 
   getAssociation(id: string): Observable<Object> {
-    return this.http.get(`${this.URL}/id/${id}`);
+    return this.http.get(`${this.URL}/byid/${id}`);
   }
 
   createAssociation(association: Object): Observable<Object> {
