@@ -18,7 +18,7 @@
                     <div class="col" style="padding: 10px; font-size: large;">
                       <div class="row">
                         <div class="col-sm-4">Id ASSOCIATION</div>
-                        <div class="col-sm-8">: {{ associationEdite.id }}</div>
+                        <div class="col-sm-8">: {{ associationEdite.id_assoc }}</div>
                       </div>
       
                       <div class="row">
@@ -106,6 +106,7 @@
                       <mat-label >Pays</mat-label>
 
                       <select  matNativeControl [(ngModel)]="associationEdite.codepays" name="codepays" required>
+                        <option value=""></option>
                         <option *ngFor="let pays of paysList" value="{{pays.id}}">{{pays.nom_pays}}</option>
                       </select>
                    
@@ -157,94 +158,59 @@
                                 <div class="row ">
                                     <div class="col">
                                         <form #associationForm=ngForm>
-                                            <div class="row">
-                                                <div class="col-md-4" >
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Association ID" [(ngModel)]="association.id_assoc" name="id_assoc" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4" >
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Sigle" [(ngModel)]="association.cigle" name="cigle" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="row">
-                                              
-                                              <div class="col-md-4">
+                                          <div class="row">
+                                            <div class="col-md-4" >
                                                 <mat-form-field class="example-full-width">
-                                                  <input matInput placeholder="Nom Association" [(ngModel)]="association.nom_assoc" name="nom_assoc" required>
-                                                  </mat-form-field>
-                                              </div>
-
-                                              <div class="col-md-4">
-                                                <mat-form-field class="example-full-width"  >
-                             
-                                                  <mat-label >Pays</mat-label>
-                  
-                                                  <select  matNativeControl [(ngModel)]="association.codepays" name="codepays" required>
-                                                    <option *ngFor="let pays of paysList" value="{{pays.id}}">{{pays.nom_pays}}</option>
-                                                  </select>
-                                               
+                                                    <input matInput placeholder="Association ID" [(ngModel)]="association.id_assoc" name="id_assoc" required>
                                                 </mat-form-field>
-                                              </div>
                                             </div>
-                        
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Responssable" [(ngModel)]="association.responsable" name="responssable" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4">
-                                                  <mat-form-field class="example-full-width">
-                                                      <input matInput placeholder="telephone" [(ngModel)]="association.telephone" name="telephone" required>
-                                                  </mat-form-field>
-                                                </div>
-                                                <div class="col-md-4">
-                                                  <mat-form-field class="example-full-width">
-                                                      <input matInput placeholder="email" [(ngModel)]="association.email" name="email" required>
-                                                  </mat-form-field>
-                                              </div>
-                                              
-                                            </div>
-                        
-                                            <!-- <div class="row">
-                                              <div class="col-md-4">
+                                            <div class="col-md-4" >
                                                 <mat-form-field class="example-full-width">
-                                                    <input matInput placeholder="Date Creation" [(ngModel)]="association.datecre" name="datecre" required>
+                                                    <input matInput placeholder="Sigle" [(ngModel)]="association.cigle" name="cigle" required>
+                                                </mat-form-field>
+                                            </div>
+                                          </div>
+                                        
+                                          <div class="row">
+                                          
+                                            <div class="col-md-4">
+                                              <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Nom Association" [(ngModel)]="association.nom_assoc" name="nom_assoc" required>
+                                              </mat-form-field>
+                                          </div>
+                          
+                                          <div class="col-md-4">
+                                            <mat-form-field class="example-full-width"  >
+                         
+                                              <mat-label >Pays</mat-label>
+                        
+                                              <select  matNativeControl [(ngModel)]="association.codepays" name="codepays" required>
+                                                <option value=""></option>
+                                                <option *ngFor="let pays of paysList" value="{{pays.id}}">{{pays.nom_pays}}</option>
+                                              </select>
+                                           
+                                            </mat-form-field>
+                                          </div>
+                                        </div>
+                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <mat-form-field class="example-full-width">
+                                                    <input matInput placeholder="Responssable" [(ngModel)]="association.responsable" name="responssable" required>
                                                 </mat-form-field>
                                             </div>
                                             <div class="col-md-4">
                                               <mat-form-field class="example-full-width">
-                                                  <input matInput placeholder="Operateur" [(ngModel)]="association.opcre" name="opcre" required>
+                                                  <input matInput placeholder="telephone" [(ngModel)]="association.telephone" name="telephone" required>
+                                              </mat-form-field>
+                                            </div>
+                                            <div class="col-md-4">
+                                              <mat-form-field class="example-full-width">
+                                                  <input matInput placeholder="email" [(ngModel)]="association.email" name="email" required>
                                               </mat-form-field>
                                           </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Race en EN" [(ngModel)]="association.datemaj" name="raceEN" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Conformation en EN" [(ngModel)]="association.telephone" name="confEN" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                        
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Race en PT" [(ngModel)]="association.race_pt" name="racePT" required>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <mat-form-field class="example-full-width">
-                                                        <input matInput placeholder="Conformation en PT" [(ngModel)]="association.telephone" name="confPT" required>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div> -->
+                                          
+                                        </div>
 
                                             <button mat-raised-button type="submit" class="btn btn-success pull-right" [disabled]=!associationForm.valid (click)="onSave()">Enregistrer</button>                                            
                                             <button mat-raised-button type="reset" class="btn btn-danger pull-right">Effacer</button>                                            

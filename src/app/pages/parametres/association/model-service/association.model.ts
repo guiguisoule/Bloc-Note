@@ -2,8 +2,8 @@ export class AssociationData {
     id_assoc: string;
     cigle:	string;
     codepays: string;
-    datecre: string;
-    datemaj: string;
+    datecre: Date;
+    datemaj: Date;
     email: string;
     nom_assoc: string;
     opcre: string;

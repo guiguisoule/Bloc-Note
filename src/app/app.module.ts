@@ -48,6 +48,10 @@ import { TypeIntrantService } from './pages/parametres/type-intrant/model-servic
 import { PartenaireService } from './pages/parametres/partenaires/model-service/partenaire.service';
 import { PosteService } from './pages/parametres/postes/model-service/poste.service';
 import { AssociationService } from './pages/parametres/association/model-service/association.service';
+import { SpecialiteService } from './pages/parametres/specialites/model-service/specialite.service';
+import { ActeurService } from './pages/parametres/acteurs/model-service/acteur.service';
+import { Questionnaire3Service } from './pages/saisie/questionnaire/q2/model-service/questionnaire3.service';
+import { OffreService } from './pages/Offres/model-service/offre.service';
 
 
 @NgModule({
@@ -93,7 +97,11 @@ import { AssociationService } from './pages/parametres/association/model-service
     TypeIntrantService,
     PartenaireService,
     PosteService,
-    AssociationService
+    AssociationService,
+    SpecialiteService,
+    ActeurService,
+    Questionnaire3Service,
+    OffreService
   ],
   bootstrap: [AppComponent]
 })

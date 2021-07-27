@@ -3,13 +3,9 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NotificationsService } from 'app/services/notifications.service';
+import { SpecialiteData } from './model-service/specialite.model';
+import { SpecialiteService } from './model-service/specialite.service';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
 
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
@@ -26,23 +22,136 @@ const NAMES: string[] = [
   styleUrls: ['./specialites.component.css']
 })
 export class SpecialitesComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id_specialite', 'lib_spe_EN', 'lib_spe_FR', 'lib_spe_PT','descr_speci', 'star'];
+  dataSource: MatTableDataSource<SpecialiteData>;
+
+  //creation d'un instance de specialite connecte au formulaire d'ajout 
+  specialite: SpecialiteData = new SpecialiteData();
+
+  //creation d'un instance de specialite connecte au formulaire d'ajout 
+  specialiteEdite: SpecialiteData = new SpecialiteData();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private notificationService: NotificationsService) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
+  constructor(
+    private specialiteService: SpecialiteService,
+    private notificationService: NotificationsService) {
+    // Create 100 specialite
+    // const specialiteData = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    //chargement de la liste des specialite
+    // this.chargerListSpecialite();
+
+    this.specialiteService.getSpecialiteList().subscribe(
+      responce => {
+        const specialiteData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(specialiteData);
+      },
+      error => {
+        console.log(error);
+        const specialiteData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(specialiteData);
+      });
+
+  }
+
+  chargerListSpecialite(){
+    this.specialiteService.getSpecialiteList().subscribe(
+      responce => {
+        console.log(responce)
+        const specialiteData = responce;
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(specialiteData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.log(error);
+        const specialiteData = [];
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(specialiteData);
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
+  onSave(){
+
+    this.specialiteService.getSpecialite(this.specialite.id_specialite).subscribe(
+      responce => {
+        //Operation si le specialite existe deja
+        this.notificationService.showNotification('danger', 'Echec : Ce specialite exist deja !<br>Merci de changer les identifients');
+      },
+      error => {
+        //Enregistrement du nouveau specialite
+
+        this.specialiteService.createSpecialite(this.specialite).subscribe(
+          responce => {
+            console.log(responce)
+            this.chargerListSpecialite();
+            this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+          },
+          error => {
+            console.log(error);
+            this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+          }
+        );
+        
+      });
+
+   
+  }
+
+  onSaveEdite(){
+     //initialisation de dans_ci par defaut
+     
+     this.specialiteService.createSpecialite(this.specialiteEdite).subscribe(
+       responce => {
+         console.log(responce)
+         this.chargerListSpecialite();
+         this.notificationService.showNotification('success', 'Succes : Enregistrement effectue avec succes');
+       },
+       error => {
+         console.log(error);
+         this.notificationService.showNotification('danger', 'Echec : Une erreure s\'est produit lors de l\'enregistrement');
+       });
+       
+  }
+
+  onEdite(idSpecialite : string){
+    this.specialiteService.getSpecialite(idSpecialite).subscribe(
+      responce => {
+        this.specialiteEdite.id_specialite = responce['id_specialite'];
+        this.specialiteEdite.lib_spe_FR = responce['lib_spe_FR'];
+        this.specialiteEdite.lib_spe_EN = responce['lib_spe_EN'];
+        this.specialiteEdite.lib_spe_PT = responce['lib_spe_PT'];
+        this.specialiteEdite.descr_speci = responce['descr_speci'];
+        console.log(responce)
+      },
+      error => {
+        this.notificationService.showNotification('danger', 'Echech : Une erreur s\'est produit lors de l\operation');
+        console.log(error);
+      });
+  }
+
+  onDeleteSpecialite(id : string){
+    this.specialiteService.deleteSpecialite(id).subscribe(
+      responce => {
+        console.log(responce)
+      },
+      error => {
+        console.log(error);
+      });
+      this.chargerListSpecialite();
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.chargerListSpecialite();    
   }
 
   applyFilter(event: Event) {
@@ -54,22 +163,4 @@ export class SpecialitesComponent implements AfterViewInit {
     }
   }
 
-  savePrixBetail(){
-    //traitement
-  }
-
 }
-
-/** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
-  const name = NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-  return {
-    id: id.toString(),
-    name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))]
-  };
-}
- 

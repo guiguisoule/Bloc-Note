@@ -107,8 +107,8 @@ export class AssociationComponent implements AfterViewInit {
       },
       error => {
         //Enregistrement du nouveau association
-        this.associationEdite.datemaj = "t";
-        this.associationEdite.datecre = "t";
+        this.associationEdite.datemaj = new Date();
+        this.associationEdite.datecre = new Date();
         this.associationService.createAssociation(this.association).subscribe(
           responce => {
             console.log(responce)
@@ -129,7 +129,7 @@ export class AssociationComponent implements AfterViewInit {
 
   onSaveEdite(){
 
-    this.associationEdite.datemaj = "t";
+    this.associationEdite.datemaj = new Date();
      this.associationService.createAssociation(this.associationEdite).subscribe(
        responce => {
          console.log(responce)

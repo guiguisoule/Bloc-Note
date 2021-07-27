@@ -24,7 +24,7 @@ const NAMES: string[] = [
   styleUrls: ['./gestion-sim.component.css']
 })
 export class GestionSimComponent implements AfterViewInit {
-  displayedColumns: string[] = ['simID', 'idPays', 'nom_sim', 'description','sim_type', 'sim_tel', 'sim_bp', 'sim_mel',  'sim_webdite', 'contact', 'star'];
+  displayedColumns: string[] = ['simID', 'idPays', 'nom_sim', 'description','sim_type', 'sim_tel', 'sim_bp', 'sim_mel',  'sim_website', 'contact', 'star'];
   dataSource: MatTableDataSource<SimData>;
 
   //creation d'un instance de sim connecte au formulaire d'ajout 
@@ -154,7 +154,7 @@ export class GestionSimComponent implements AfterViewInit {
         this.simEdite.sim_tel = responce['sim_tel'];
         this.simEdite.sim_bp = responce['sim_bp'];
         this.simEdite.sim_mel = responce['sim_mel'];
-        this.simEdite.sim_webdite = responce['sim_webdite'];
+        this.simEdite.sim_website = responce['sim_website'];
         this.simEdite.sim_logo = responce['sim_logo'];
         this.simEdite.contact = responce['contact'];
         console.log(responce)
