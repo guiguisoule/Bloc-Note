@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'app/login-page/model-service/auth.service';
+import { OperateurData } from 'app/login-page/model-service/operateur.model';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -383,7 +385,11 @@ export class SidebarComponent implements OnInit {
   menuPredictionPrix: any[];
   menuAdministration: any[];
 
-  constructor() { }
+  operateur : OperateurData;
+
+  constructor(private authService: AuthService) {
+    this.operateur = authService.operateur;
+   }
 
   ngOnInit() {
     //initialisation des options dans les listes
@@ -397,10 +403,15 @@ export class SidebarComponent implements OnInit {
     this.menuPredictionPrix = PRESENTATION_PRIX.filter(menuItem => menuItem);
     this.menuAdministration = ADMINISTRATION.filter(menuItem => menuItem);
   }
+
   isMobileMenu() {
       if ($(window).width() > 991) {
           return false;
       }
       return true;
   };
+
+  isAdmin(): Boolean{
+    return this.authService.isAdmin();
+  }
 }

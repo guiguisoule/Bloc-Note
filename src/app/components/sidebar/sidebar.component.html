@@ -212,7 +212,7 @@
     </div>
 
     <!-- otion Administration SIM2G -->
-    <p class="menuOption">
+    <p class="menuOption" *ngIf="isAdmin()">
         <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseAdmin" role="button" aria-expanded="false" aria-controls="collapseAdmin">
             <i class="material-icons">dashboard</i>
             Administration SIM2G

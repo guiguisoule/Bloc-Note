@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotificationsService } from 'app/services/notifications.service';
 import { AuthService } from './model-service/auth.service';
 import { OperateurData } from './model-service/operateur.model';
 
@@ -9,16 +10,14 @@ import { OperateurData } from './model-service/operateur.model';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit {
-
-  // operateur =new Operateur();
-  erreur = 0;
   
   //declaration de l'operateur
   operateur = new OperateurData();
 
   constructor(
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private loginAlert: NotificationsService) { }
 
   ngOnInit(): void {
     
@@ -41,16 +40,15 @@ export class LoginPageComponent implements OnInit {
     this.authService.getOperateur(this.operateur.meloper).subscribe(
       (reponce: OperateurData) => {
         if(reponce.password == this.operateur.password){
-          this.erreur = 0;
           this.authService.SignIn(reponce);
           this.router.navigate(['/dashboard']);
         }else{
-          this.erreur = 1;
+          this.loginAlert.showAlertLogin('warning', "Echec de connection : Mote de passe incorrect");
         }
       },
       (error) => {
         console.log(error);
-
+        this.loginAlert.showAlertLogin('danger', "Echec de connection : E-Mail ou mot de passe incorrect");
       }
     );
   }
