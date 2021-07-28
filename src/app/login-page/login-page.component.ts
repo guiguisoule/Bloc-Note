@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './model-service/auth.service';
+import { OperateurData } from './model-service/operateur.model';
 
 @Component({
   selector: 'app-login-page',
@@ -10,8 +12,13 @@ export class LoginPageComponent implements OnInit {
 
   // operateur =new Operateur();
   erreur = 0;
+  
+  //declaration de l'operateur
+  operateur = new OperateurData();
+
   constructor(
-    private router: Router) { }
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit(): void {
     
@@ -30,16 +37,22 @@ export class LoginPageComponent implements OnInit {
 
   /****************Methode de connexion */
   onLoggedin() { 
-    this.router.navigate(['/dashboard']);
-    
-    // this.authService.getOperateurFromDB(this.operateur.meloper).subscribe((usr:Operateur) =>
-    //  { 
-    //    if
-    //     (usr.password==this.operateur.password)
-    //     { this.authService.SignIn(usr); 
-    //       this.router.navigate(['/dashboard']);
-    //      }
-    //     else this.erreur = 1; },(err) => console.log(err)); 
+
+    this.authService.getOperateur(this.operateur.meloper).subscribe(
+      (reponce: OperateurData) => {
+        if(reponce.password == this.operateur.password){
+          this.erreur = 0;
+          this.authService.SignIn(reponce);
+          this.router.navigate(['/dashboard']);
+        }else{
+          this.erreur = 1;
+        }
+      },
+      (error) => {
+        console.log(error);
+
+      }
+    );
   }
 
 }

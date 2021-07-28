@@ -82,13 +82,12 @@ export class ConclureOffresComponent implements AfterViewInit {
      responce => {
        console.log(responce)
        this.deviseList = responce;
-       
      },
      error => {
        console.log(error);
-     });
-    
-   }
+     }
+    );
+  }
 
   onSave(){
 

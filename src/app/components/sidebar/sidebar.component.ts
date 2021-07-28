@@ -334,7 +334,7 @@ export const TABLEAU_BORD: RouteInfo[] = [
     //Menu Administration SIM2G
     { 
       path: '/utilisateurs', 
-      title: 'Collectes',  
+      title: 'Utilisateurs',  
       icon: 'dashboard', 
       class: '' 
     },

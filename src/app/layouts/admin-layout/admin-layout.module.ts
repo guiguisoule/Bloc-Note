@@ -84,6 +84,7 @@ import { EnquetteursComponent } from 'app/pages/administration/enquetteurs/enque
 import { SuperviseursComponent } from 'app/pages/administration/superviseurs/superviseurs.component';
 import { GestionDroitsComponent } from 'app/pages/administration/gestion-droits/gestion-droits.component';
 import { VocationMarchesComponent } from 'app/pages/parametres/vocation-marches/vocation-marches.component';
+import { NavbarComponent } from 'app/components/navbar/navbar.component';
 
 //importation des composants sim2g
 

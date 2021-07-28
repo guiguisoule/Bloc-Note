@@ -64,6 +64,7 @@ import { EnquetteursComponent } from 'app/pages/administration/enquetteurs/enque
 import { SuperviseursComponent } from 'app/pages/administration/superviseurs/superviseurs.component';
 import { GestionDroitsComponent } from 'app/pages/administration/gestion-droits/gestion-droits.component';
 import { VocationMarchesComponent } from 'app/pages/parametres/vocation-marches/vocation-marches.component';
+import { AuthGuard } from 'app/services/auth.Guard';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -108,7 +109,7 @@ export const AdminLayoutRoutes: Routes = [
     //         component: UpgradeComponent
     //     }]
     // }
-    { path: 'dashboard',      component: DashboardComponent },
+    { path: 'dashboard',      component: DashboardComponent ,canActivate:[AuthGuard]},
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },

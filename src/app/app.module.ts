@@ -52,6 +52,8 @@ import { SpecialiteService } from './pages/parametres/specialites/model-service/
 import { ActeurService } from './pages/parametres/acteurs/model-service/acteur.service';
 import { Questionnaire3Service } from './pages/saisie/questionnaire/q2/model-service/questionnaire3.service';
 import { OffreService } from './pages/Offres/model-service/offre.service';
+import { AuthGuard } from './services/auth.Guard';
+import { AdminGuard } from './services/admin.Guard';
 
 
 @NgModule({
@@ -101,7 +103,9 @@ import { OffreService } from './pages/Offres/model-service/offre.service';
     SpecialiteService,
     ActeurService,
     Questionnaire3Service,
-    OffreService
+    OffreService,
+    AuthGuard,
+    AdminGuard
   ],
   bootstrap: [AppComponent]
 })
