@@ -54,6 +54,7 @@ import { Questionnaire3Service } from './pages/saisie/questionnaire/q2/model-ser
 import { OffreService } from './pages/Offres/model-service/offre.service';
 import { AuthGuard } from './services/auth.Guard';
 import { AdminGuard } from './services/admin.Guard';
+import { TypeAlerteService } from './pages/parametreGlobeau/type-alertes/model-service/type-alerte.service';
 
 
 @NgModule({
@@ -105,7 +106,8 @@ import { AdminGuard } from './services/admin.Guard';
     Questionnaire3Service,
     OffreService,
     AuthGuard,
-    AdminGuard
+    AdminGuard,
+    TypeAlerteService
   ],
   bootstrap: [AppComponent]
 })

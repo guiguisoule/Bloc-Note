@@ -1,1 +1,165 @@
-<p>type-alertes works!</p>
+<div class="main-content">
+    <div class="container-fluid">
+      <!-- Modal edit element -->
+      <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">AlerteType</h5>
+            </div>
+            <div class="modal-body">
+              <form #alerteTypeEditeForm=ngForm>
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="ID" [(ngModel)]="alerteTypeEdite.id" name="id" disabled>
+                      </mat-form-field>
+                  </div>
+                  <div class="col-md-5">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Libelle" [(ngModel)]="alerteTypeEdite.litypealrt" name="litypealrt" required>
+                      </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                      <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Frequence" [(ngModel)]="alerteTypeEdite.frequence" name="frequence" required>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Pre Jours" [(ngModel)]="alerteTypeEdite.prejour" name="prejour" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-5">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Sms" [(ngModel)]="alerteTypeEdite.sms" name="sms" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Mel" [(ngModel)]="alerteTypeEdite.mel" name="mel" required>
+                    </mat-form-field>
+                </div>
+            </div>
+                
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger"  data-bs-dismiss="modal" >Fermer</button>
+            <button type="button" class="btn btn-primary" [disabled]=!alerteTypeEditeForm.valid (click)="onSaveEdite()" data-bs-toggle="modal" data-bs-target="#operationModal" data-bs-dismiss="modal">Modiffier</button>
+          </div>
+        </div>
+        </div>
+    </div>
+    <!-- fin modal -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <h2 align="center" class="titre-tableau">FORMULAIRE ALERTE TYPE</h2>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 boxRecherche">
+                                <div class="row ">
+                                    <div class="col">
+                                      <form #alerteTypeForm=ngForm>
+                                        <div class="row">
+                                          <div class="col-md-3">
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="ID" [(ngModel)]="alerteType.id" name="id" required>
+                                              </mat-form-field>
+                                          </div>
+                                          <div class="col-md-5">
+                                              <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Libelle" [(ngModel)]="alerteType.litypealrt" name="litypealrt" required>
+                                              </mat-form-field>
+                                          </div>
+                                          <div class="col-md-4">
+                                              <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Frequence" [(ngModel)]="alerteType.frequence" name="frequence" required>
+                                              </mat-form-field>
+                                          </div>
+                                      </div>
+                        
+                                      <div class="row">
+                                        <div class="col-md-3">
+                                          <mat-form-field class="example-full-width">
+                                              <input matInput placeholder="Pre Jours" [(ngModel)]="alerteType.prejour" name="prejour" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <mat-form-field class="example-full-width">
+                                              <input matInput placeholder="Sms" [(ngModel)]="alerteType.sms" name="sms" required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="example-full-width">
+                                              <input matInput placeholder="Mel" [(ngModel)]="alerteType.mel" name="mel" required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                          <button mat-raised-button type="submit" class="btn btn-success pull-right" [disabled]=!alerteTypeForm.valid (click)="onSave()">Enregistrer</button>                                            
+                                          <button mat-raised-button type="reset" class="btn btn-danger pull-right">Effacer</button>                                            
+
+                                      </form>
+                                  </div>
+                              </div>
+                                
+                          </div>
+                      </div>
+                </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-4" *ngFor="let alerte of alerteTypeList">
+                                <div class="card card-stats">
+                                    <div class="card-header card-header-danger card-header-icon">
+                                        <div class="card-icon">
+                                            <button mat-button data-bs-toggle="modal" data-bs-target="#myModal" (click)="onEdite(alerte.id)">
+                                              <i class="material-icons">
+                                                  app_registration
+                                                </i>
+                                            </button>
+                                                
+                                        </div>
+                                        <h3 class="card-title">Frequence</h3>
+                                        <h4 class="card-title">{{alerte.frequence}}</h4>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="stats">
+                                            <div class="row justify-content-center">
+                                              <div class="col-12">
+                                                <h5>{{ alerte.litypealrt }}</h5>
+                                              </div>
+                                              <div class="col-sm-4">
+                                                <h4>Jours</h4> 
+                                                {{alerte.prejour}}
+                                              </div>
+                                              <div class="col-sm-4">
+                                                <h4>SMS</h4>
+                                                {{alerte.sms}}
+                                              </div>
+                                              <div class="col-sm-4">
+                                                <h4>Mel</h4>
+                                                {{alerte.mel}}
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+  </div>
+</div>
+  

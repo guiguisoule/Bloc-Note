@@ -43,12 +43,12 @@ export class LoginPageComponent implements OnInit {
           this.authService.SignIn(reponce);
           this.router.navigate(['/dashboard']);
         }else{
-          this.loginAlert.showAlertLogin('warning', "Echec de connection : Mote de passe incorrect");
+          this.loginAlert.showAlertLogin("Echec de connection : Mote de passe incorrect");
         }
       },
       (error) => {
         console.log(error);
-        this.loginAlert.showAlertLogin('danger', "Echec de connection : E-Mail ou mot de passe incorrect");
+        this.loginAlert.showAlertLogin("Echec de connection : E-Mail ou mot de passe incorrect");
       }
     );
   }

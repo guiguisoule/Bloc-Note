@@ -14,7 +14,7 @@ import { OperateurData } from 'app/login-page/model-service/operateur.model';
 export class NavbarComponent implements OnInit {
     private listTitles: any[];
     location: Location;
-    operateur: OperateurData;
+    operateur = new OperateurData();
     mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
