@@ -1,5 +1,5 @@
 export class PartenaireData {
-    partnerid: string;
+    id: string;
     name: string;
     link: string;
     logo: string;

@@ -4,7 +4,7 @@ export class OffreData {
     datemaj: string;
     opcre: string;
     opmaj: string;
-    libelleoffre: string;
+    libelle_offre: string;
     typeoffre: string;
     idproduit: string;
     idtypean: string;

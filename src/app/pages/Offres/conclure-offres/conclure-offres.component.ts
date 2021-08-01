@@ -15,7 +15,7 @@ import { OffreService } from '../model-service/offre.service';
 })
 export class ConclureOffresComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'datecre', 'datemaj', 'opcre','opmaj', 'libelleoffre', 'typeoffre', 'idproduit',  'idtypean', 'qteoffre', 'prixoffre', 'valide',  'conclus', 'dateoffre', 'dateval',  'coordx',  'coordy',  'idacteur',  'photo',  'idunit',  'statut',  'codedev','star'];
+  displayedColumns: string[] = ['id', 'datecre', 'datemaj', 'opcre','opmaj', 'libelle_offre', 'typeoffre', 'idproduit',  'idtypean', 'qteoffre', 'prixoffre', 'valide',  'conclus', 'dateoffre', 'dateval',  'coordx',  'coordy',  'idacteur',  'photo',  'idunit',  'statut',  'codedev','star'];
   dataSource: MatTableDataSource<OffreData>;
 
   //creation d'un instance de offre connecte au formulaire d'ajout 
@@ -146,7 +146,7 @@ export class ConclureOffresComponent implements AfterViewInit {
         this.offreEdite.idproduit = responce['idproduit'];
         this.offreEdite.idtypean = responce['idtypean'];
         this.offreEdite.idunit = responce['idunit'];
-        this.offreEdite.libelleoffre = responce['libelleoffre'];
+        this.offreEdite.libelle_offre = responce['libelle_offre'];
         this.offreEdite.opcre = responce['opcre'];
         this.offreEdite.opmaj = responce['opmaj'];
         this.offreEdite.photo = responce['photo'];

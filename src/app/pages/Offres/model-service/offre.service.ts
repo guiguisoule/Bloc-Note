@@ -16,11 +16,11 @@ export class OffreService {
   }
 
   getOffreAchatList(): Observable<any>{
-    return this.http.get<any[]>(`${this.URL}/achat/all`);
+    return this.http.get<any[]>(`${this.URL}/type_achat`);
   }
 
   getOffreVenteList(): Observable<any>{
-    return this.http.get<any[]>(`${this.URL}/vente/all`);
+    return this.http.get<any[]>(`${this.URL}/type_vtn`);
   }
 
   getOffre(id: string): Observable<Object> {
