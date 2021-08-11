@@ -8,40 +8,58 @@ import { OperateurData } from './operateur.model';
   providedIn: 'root'
 })
 export class AuthService {
-  operateur: OperateurData;
+  operateur = new OperateurData();
+
   public loggedOperateur: string;
   public isloggedIn: Boolean = true;
   public groupes: string;
 
-  URL : string = "http://localhost:8082/sim2g/api/operateur";
+  private listeOperateur: OperateurData[] = [
+    {
+      id: 1,
+      nom: "test",
+      prenom: "test",
+      email: "test@mail.com",
+      password: "123",
+      date: new Date()
+    }
+
+  ];
 
   constructor( private http: HttpClient,
     private router: Router) { }
 
-  getOperateur(id: string): Observable<Object> {
-    return this.http.get(`${this.URL}/email/${id}`);
+  getOperateurListe(){
+    return this.listeOperateur;
   }
 
-  SignIn(operateur :OperateurData){ 
-    this.loggedOperateur = operateur.meloper; 
-    this.isloggedIn = true;
-    this.groupes = operateur.idgroupe; 
-    this.operateur = operateur;
+  SignUp(op : OperateurData){ 
+  
+    this.listeOperateur.push(op);
+    this.isloggedIn = true; 
+    this.loggedOperateur = op.email; 
+
+    this.operateur.id = op.id;
+    this.operateur.nom = op.nom;
+    this.operateur.prenom = op.prenom;
+    this.operateur.email = op.email;
+    this.operateur.password = op.password;
+
+
     localStorage.setItem('loggedOperateur',this.loggedOperateur); 
     
     localStorage.setItem('isloggedIn',String(this.isloggedIn)); 
   }
 
-
-  isAdmin():Boolean{
-    if(this.groupes === 'ADM'){
-      return true;
-    }else{
-      return false;
-    }
+  SignIn(email :string){ 
+     
+    this.isloggedIn = true;
+    this.operateur = this.listeOperateur.find(user => user.email = email);
+    this.loggedOperateur = this.operateur.email;
+    localStorage.setItem('loggedOperateur',this.loggedOperateur); 
+    
+    localStorage.setItem('isloggedIn',String(this.isloggedIn)); 
   }
-
-
 
   //**********Methode de deconnection */
   logout() {

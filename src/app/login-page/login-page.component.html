@@ -1,50 +1,54 @@
 
 <body class="imgs">
-
+    <div class="row jusify-content-center" *ngIf="isAuth == false">
+        <div class="col">
+            <div class="alert alert-danger alert-with-icon" data-notify="container">
+                <i class="material-icons" data-notify="icon">add_alert</i>
+                <span data-notify="message">{{ alertMess }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row jusify-content-center" *ngIf="isSignUp == false">
+        <div class="col">
+            <div class="alert alert-danger alert-with-icon" data-notify="container">
+                <i class="material-icons" data-notify="icon">add_alert</i>
+                <span data-notify="message">Echec de l'inscription</span>
+            </div>
+        </div>
+    </div>
     <div class="boxmarge">
-
         <div class="container" id="container">
             <div class="form-container sign-up-container">
-                <form action="#">
-                    <h4> Toujous faire Attention sur le net! </h4>
-                    <p> Cookie : Anciennement petit gâteau sucré, qu'on acceptait avec plaisir. Aujourd'hui : petit fichier informatique drôlement salé, qu'il faut refuser avec véhémence.</p>
-                    <div class="social-container">
-                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                <form #inscriptionForm=ngForm action="#">
+                    <h2> Inscription </h2>
+                    <input type="text" placeholder="Nom" [(ngModel)]="operateur.nom" name="nom" required/>
+                    <input type="text" placeholder="Prenom" [(ngModel)]="operateur.prenom" name="prenom" required/>
+                    <input type="email" placeholder="Email" [(ngModel)]="operateur.email" name="email" required/>
+                    <input type="password" placeholder="Password" [(ngModel)]="operateur.password" name="password" required/>
+                    <button type="button" [disabled]=!inscriptionForm.valid (click)="onSignUp()" class="btn btn-success">S'Inscrire</button>
+
                     Le succès est un chemin que la patience et le travail rendent accessible
                 </form>
             </div>
             <div class="form-container sign-in-container">
-
-                <form action="#">
-                    <h1>S'identifier</h1>
-                    <div class="social-container">
-                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                    <span>or use your account</span>
-                    <input type="email" placeholder="Email" [(ngModel)]="operateur.meloper" name="meloper"/>
+                
+                <form #connexionForm=ngForm action="#">
+                    <h2>Authentification</h2>
+                    <input type="email" placeholder="Email" [(ngModel)]="operateur.email" name="email"/>
                     <input type="password" placeholder="Password" [(ngModel)]="operateur.password" name="password"/>
                     <a href="#">Forgot your password?</a>
-                    <button type="button" (click)="onLoggedin()" class="btn btn-success">Connexion</button>
+                    <button type="button" [disabled]=!connexionForm.valid (click)="onSignIn()" class="btn btn-success">Connexion</button>
 
                 </form>
             </div>
             <div class="overlay-container">
                 <div class="overlay">
                     <div class="overlay-panel overlay-left">
-                        <h1>Securite</h1>
-                        <p>Pour rester connecté avec nous, veuillez vous connecter avec vos informations personnelles</p>
-                        <button class="ghost" id="signIn">Sign In</button>
+                        <button class="ghost" id="signIn" >Se Connecter</button>
                     </div>
                     <div class="overlay-panel overlay-right">
-                        <h2> Bienvenues </h2>
-                        <h1>SIM2G</h1>
-                        <p>Entrez vos informations personnelles et commencez votre voyage avec nous</p>
-                        <button class="ghost" id="signUp">I'liked</button>
+                        <p>Pour S'inscrire Clicker sur le bouton ci-desous</p>
+                        <button class="ghost" id="signUp">Inscription</button>
                     </div>
                 </div>
             </div>

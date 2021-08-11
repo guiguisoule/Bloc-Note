@@ -13,6 +13,10 @@ export class LoginPageComponent implements OnInit {
   
   //declaration de l'operateur
   operateur = new OperateurData();
+  listeOperateur: OperateurData[];
+  isAuth : boolean = true;
+  isSignUp: boolean = true;
+  alertMess : string;
 
   constructor(
     private router: Router,
@@ -32,25 +36,68 @@ export class LoginPageComponent implements OnInit {
     signInButton.addEventListener('click', () => {
       container.classList.remove("right-panel-active");
     });
+
+    this.listeOperateur = this.authService.getOperateurListe();
   }
 
   /****************Methode de connexion */
-  onLoggedin() { 
+  onSignIn() { 
 
-    this.authService.getOperateur(this.operateur.meloper).subscribe(
-      (reponce: OperateurData) => {
-        if(reponce.password == this.operateur.password){
-          this.authService.SignIn(reponce);
-          this.router.navigate(['/dashboard']);
-        }else{
-          this.loginAlert.showAlertLogin("Echec de connection : Mote de passe incorrect");
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.loginAlert.showAlertLogin("Echec de connection : E-Mail ou mot de passe incorrect");
+    let reponce = this.verifierOperateurMail(this.operateur.email);
+    if(reponce){
+      let rep = this.verifierOperateurPass(this.operateur.password);
+      if(rep){
+        this.authService.SignIn(this.operateur.email);
+        this.isAuth = true;
+        this.router.navigate(['/bloc-note']);
+        
+      }else{
+        this.isAuth = false;
       }
-    );
+    }else{
+      this.isAuth = false;
+    }
+    
   }
 
+  onSignUp() { 
+
+    let reponce = this.verifierOperateurMail(this.operateur.email);
+    if(reponce){
+      this.isSignUp = false;
+    }else{
+
+      this.authService.SignUp(this.operateur);
+      this.isAuth = true;
+      this.isSignUp = true;
+      this.router.navigate(['/bloc-note']);
+    }
+    
+  }
+
+  verifierOperateurMail(mail: string): boolean {
+    let i = 0;
+    let isAuth = false;
+    this.listeOperateur.forEach(element => {
+      if(element.email != mail){
+        i++;
+      }else{
+        isAuth = true;
+      }
+    });
+    return isAuth;
+  }
+
+  verifierOperateurPass(pass: string): boolean {
+    let i = 0;
+    let isAuth = false;
+    this.listeOperateur.forEach(element => {
+      if(element.password != pass){
+        i++;
+      }else{
+        isAuth = true;
+      }
+    });
+    return isAuth;
+  }
 }

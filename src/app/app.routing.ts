@@ -15,7 +15,7 @@ const routes: Routes =[
   },
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'bloc-note',
     pathMatch: 'full',
   }, {
     path: '',

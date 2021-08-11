@@ -1,0 +1,47 @@
+[
+    {
+        "User": [
+            {
+                "id": "0",
+                "nom": "",
+                "prenom": "",
+                "email": "",
+                "pass": ""
+            },
+            {
+                "id": "1",
+                "nom": "",
+                "prenom": "",
+                "email": "",
+                "pass": ""
+            },
+            {
+                "id": "2",
+                "nom": "",
+                "prenom": "",
+                "email": "",
+                "pass": ""
+            }
+        ],
+        "Note": [
+            {
+                "id": "0",
+                "titre": "",
+                "note": "",
+                "date": ""
+            },
+            {
+                "id": "1",
+                "titre": "",
+                "note": "",
+                "date": ""
+            },
+            {
+                "id": "2",
+                "titre": "",
+                "note": "",
+                "date": ""
+            }
+        ]
+    }
+]

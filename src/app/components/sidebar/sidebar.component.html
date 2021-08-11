@@ -1,9 +1,9 @@
 <div class="logo">
     <a routerLink="/dashboard" class="simple-text">
         <div class="logo-img">
-            <img src="/assets/img/logo-sim2g-mini-mini.jpeg"/>
+            <img src="/assets/img/angular2-logo-red.png"/>
         </div>
-        SIM2G
+        BLOC-NOTE
     </a>
 </div>
 <div class="sidebar-wrapper">
@@ -64,171 +64,13 @@
     </ul> -->
 
     <!-- otion Dashboard-->
+
     <p class="menuOption">
-        <a class="nav-link" routerLink="/dashboard" >
+        <a class="nav-link" routerLink="/bloc-note" >
             <i class="material-icons">dashboard</i>
-            Dashboard
+            Liste des Notes
         </a>
     </p>
 
-     <!-- otion Tableau De Bord -->
-     <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseDash" role="button" aria-expanded="false" aria-controls="collapseDash">
-            <i class="material-icons">dashboard</i>
-            Tableau De Bord
-        </a>
-      </p>
-      <div   class="collapse" id="collapseDash">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuTableauBord" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-      </div>
-
-    <!-- otion Parametre Global -->
-     <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseParamGlob" role="button" aria-expanded="false" aria-controls="collapseParamGlob">
-            <i class="material-icons">dashboard</i>
-            Parametres Globale
-        </a>
-      </p>
-      <div   class="collapse" id="collapseParamGlob">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuParametreGlobale" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-      </div>
-    
-    <!-- otion Parametres -->
-    <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseParam" role="button" aria-expanded="false" aria-controls="collapseParam">
-            <i class="material-icons">dashboard</i>
-            Parametre
-        </a>
-      </p>
-      <div   class="collapse" id="collapseParam">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuParametres" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-      </div>
-
-    <!-- otion Saisie Des Donness -->
-    <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseSaisie" role="button" aria-expanded="false" aria-controls="collapseSaisie">
-            <i class="material-icons">dashboard</i>
-            Saisie Des Données
-        </a>
-      </p>
-      <div   class="collapse" id="collapseSaisie">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuSaisieDonnees" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-      </div>
-
-    <!-- otion Offres et Demande -->
-    <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseOffreDemqnde" role="button" aria-expanded="false" aria-controls="collapseOffreDemqnde">
-            <i class="material-icons">dashboard</i>
-            Offres Et Demande
-        </a>
-      </p>
-      <div   class="collapse" id="collapseOffreDemqnde">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuOffresDemande" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-      </div>
-
-    <!-- otion Validation -->
-    <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseValidation" role="button" aria-expanded="false" aria-controls="collapseValidation">
-            <i class="material-icons">dashboard</i>
-            Validation
-        </a>
-      </p>
-      <div   class="collapse" id="collapseValidation">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuValidation" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-      </div>
-
-    <!-- otion Presentation des prix -->
-    <p class="menuOption">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapsePresentationPrix" role="button" aria-expanded="false" aria-controls="collapsePresentationPrix">
-            <i class="material-icons">dashboard</i>
-            Presentation des prix 
-        </a>
-    </p>
-    <div   class="collapse" id="collapsePresentationPrix">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuPredictionPrix" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- otion Administration SIM2G -->
-    <p class="menuOption" *ngIf="isAdmin()">
-        <a  data-bs-toggle="collapse"  class="nav-link" href="#collapseAdmin" role="button" aria-expanded="false" aria-controls="collapseAdmin">
-            <i class="material-icons">dashboard</i>
-            Administration SIM2G
-        </a>
-    </p>
-    <div   class="collapse" id="collapseAdmin">
-        <div>
-            <ul class="nav">
-                <li routerLinkActive="active" *ngFor="let menuItem of menuAdministration" class="{{menuItem.class}} nav-item">
-                    <a class="nav-link" [routerLink]="[menuItem.path]">
-                        <i class="material-icons">{{menuItem.icon}}</i>
-                        <p>{{menuItem.title}}</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
     <span class="espace"></span>
 </div>
